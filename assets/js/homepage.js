@@ -113,6 +113,43 @@
   setTimeout(hidePreloader, 4000);
 
   function boot() {
+    // Mark the page as JS-ready so reveal styles activate.
+    document.body.classList.add('js-ready');
+
+    // Universal scroll-reveal: adds `is-in-view` when blocks enter the viewport.
+    run('initReveal', function initReveal() {
+      if (!('IntersectionObserver' in window)) {
+        document.querySelectorAll('[data-reveal],[data-reveal-stagger]').forEach(el => el.classList.add('is-in-view'));
+        return;
+      }
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.classList.add('is-in-view');
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+      document.querySelectorAll('[data-reveal],[data-reveal-stagger]').forEach(el => io.observe(el));
+
+      // Safety net: if anything remains hidden after 3s (e.g., observer hiccup
+      // on a background tab), force-show it so content is never stuck invisible.
+      setTimeout(() => {
+        document.querySelectorAll('[data-reveal]:not(.is-in-view),[data-reveal-stagger]:not(.is-in-view)').forEach(el => el.classList.add('is-in-view'));
+      }, 3000);
+
+      // Inspire section uses ::before curtain wipe — watch the section itself
+      const inspire = document.querySelector('.hp-inspire');
+      if (inspire) {
+        const io2 = new IntersectionObserver((entries) => {
+          entries.forEach(e => {
+            if (e.isIntersecting) { e.target.classList.add('is-in-view'); io2.unobserve(e.target); }
+          });
+        }, { threshold: 0.25 });
+        io2.observe(inspire);
+      }
+    });
+
     // Nav: sticky shadow, mega menus, mobile overlay
     run('initNav', function initNav() {
       const nav = document.querySelector('[data-nav]');
@@ -207,39 +244,80 @@
       backdrop.addEventListener('click', closeMobile);
     });
 
-    // ── Hero: rings fade, magazines fly in, headline split, parallax ──
-    run('initHero', function initHero() {
-      if (MPT.isReducedMotion()) {
-        document.querySelectorAll('.hp-hero__ring').forEach(r => r.style.opacity = .12);
-        document.querySelectorAll('.hp-hero__mag').forEach(m => m.style.opacity = 1);
-        return;
+    // ── Hero: full-bleed image slider with Ken Burns + auto-advance ──
+    run('initHero', async function initHero() {
+      const slidesEl = document.querySelector('[data-hero-slides]');
+      const indicatorsEl = document.querySelector('[data-hero-indicators]');
+      const caption = document.querySelector('[data-hero-caption]');
+      if (!slidesEl) return;
+
+      let cities = [];
+      try {
+        const res = await fetch('assets/data/cities.json');
+        cities = await res.json();
+      } catch (err) {
+        console.warn('initHero: cities.json failed, using fallback', err);
+        cities = [
+          { name: 'Paris',     country: 'France',         tagline: 'Light, art, and slow afternoons.', image: 'https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?w=1920&fm=webp&q=85' },
+          { name: 'Rome',      country: 'Italy',          tagline: 'Three millennia, one walk.',       image: 'https://images.unsplash.com/photo-1515542483964-5e8c63d7d89b?w=1920&fm=webp&q=85' },
+          { name: 'Barcelona', country: 'Spain',          tagline: 'Gaudí mornings, tapas nights.',    image: 'https://images.unsplash.com/photo-1578095172812-dcc191c5aed8?w=1920&fm=webp&q=85' },
+        ];
       }
 
-      const rings = document.querySelectorAll('.hp-hero__ring');
-      const mags  = document.querySelectorAll('.hp-hero__mag');
-      const line1 = document.querySelector('[data-hero-split]');
-      const line2 = document.querySelector('[data-hero-em]');
+      slidesEl.innerHTML = cities.map((c, i) =>
+        `<div class="hp-hero__slide ${i === 0 ? 'is-active' : ''}" data-hero-slide="${i}" style="background-image: url('${c.image}')"></div>`
+      ).join('');
 
-      gsap.set(rings, { scale: .85, opacity: 0 });
-      gsap.to(rings, { scale: 1, opacity: .12, duration: .9, ease: 'power3.out', stagger: .12, delay: .1 });
+      if (indicatorsEl) {
+        indicatorsEl.innerHTML = cities.map((_, i) =>
+          `<button type="button" data-hero-to="${i}" class="${i === 0 ? 'is-active' : ''}" aria-label="Slide ${i + 1} of ${cities.length}"></button>`
+        ).join('');
+      }
 
-      mags.forEach((m, i) => {
-        const initialX = m.classList.contains('hp-hero__mag--1') || m.classList.contains('hp-hero__mag--2') ? -40 : 40;
-        const initialY = m.classList.contains('hp-hero__mag--1') || m.classList.contains('hp-hero__mag--3') ? -30 : 30;
-        gsap.fromTo(m, { x: initialX, y: initialY, opacity: 0 }, { x: 0, y: 0, opacity: 1, duration: .7, ease: 'power3.out', delay: .3 + i * .1 });
+      const chapterEl = caption?.querySelector('[data-hero-chapter]');
+      const nameEl    = caption?.querySelector('[data-hero-name]');
+      const taglineEl = caption?.querySelector('[data-hero-tagline]');
 
-        gsap.to(m, {
-          y: ['-15%','-8%','-20%','-11%'][i] || '-10%',
-          ease: 'none',
-          scrollTrigger: { trigger: '.hp-hero', start: 'top top', end: 'bottom top', scrub: true }
-        });
+      let active = 0;
+      function setActive(i) {
+        active = (i + cities.length) % cities.length;
+        slidesEl.querySelectorAll('.hp-hero__slide').forEach((s, idx) => s.classList.toggle('is-active', idx === active));
+        indicatorsEl?.querySelectorAll('button').forEach((b, idx) => b.classList.toggle('is-active', idx === active));
+        const c = cities[active];
+        if (chapterEl) chapterEl.textContent = 'No. ' + String(active + 1).padStart(2, '0');
+        if (nameEl)    nameEl.textContent = (c.name + ' — ' + c.country).toUpperCase();
+        if (taglineEl) taglineEl.textContent = c.tagline;
+      }
+      setActive(0);
+
+      let auto;
+      function startAuto() { stopAuto(); auto = setInterval(() => setActive(active + 1), 6000); }
+      function stopAuto()  { if (auto) { clearInterval(auto); auto = null; } }
+
+      indicatorsEl?.addEventListener('click', e => {
+        const b = e.target.closest('[data-hero-to]');
+        if (b) { setActive(parseInt(b.dataset.heroTo, 10)); stopAuto(); startAuto(); }
+      });
+      document.querySelectorAll('[data-hero-nav]').forEach(btn => {
+        btn.addEventListener('click', () => { setActive(active + parseInt(btn.dataset.heroNav, 10)); stopAuto(); startAuto(); });
       });
 
-      if (line1) {
-        MPT.splitAndAnimate(line1, { split: 'words', stagger: .08, duration: .5, ease: 'power3.out', from: { y: 20 }, start: 'top 90%' });
+      // Pause auto-advance when user hovers the arrows or indicators
+      document.querySelectorAll('[data-hero-nav],[data-hero-indicators]').forEach(el => {
+        el.addEventListener('mouseenter', stopAuto);
+        el.addEventListener('mouseleave', startAuto);
+      });
+
+      startAuto();
+
+      // Headline reveal (same pattern as before)
+      const line1 = document.querySelector('[data-hero-split]');
+      const line2 = document.querySelector('[data-hero-em]');
+      if (line1 && typeof MPT !== 'undefined' && MPT.splitAndAnimate) {
+        MPT.splitAndAnimate(line1, { split: 'words', stagger: .09, duration: .6, ease: 'power3.out', from: { y: 28 }, start: 'top 100%' });
       }
-      if (line2) {
-        gsap.from(line2, { y: 20, opacity: 0, duration: .6, delay: .55, ease: 'power3.out' });
+      if (line2 && typeof gsap !== 'undefined') {
+        gsap.from(line2, { y: 30, opacity: 0, duration: .8, delay: .5, ease: 'power3.out' });
       }
     });
 
@@ -325,7 +403,10 @@
           t.setAttribute('aria-selected', idx === active ? 'true' : 'false');
         });
         const card = track.querySelector(`[data-city-card="${active}"]`);
-        if (card) card.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        if (card) {
+          const target = card.offsetLeft - (track.clientWidth - card.clientWidth) / 2;
+          track.scrollTo({ left: Math.max(0, target), behavior: 'smooth' });
+        }
       }
 
       function startAuto() {
@@ -420,7 +501,10 @@
       function scrollToIdx(i) {
         idx = (i + reviews.length) % reviews.length;
         const card = track.children[idx];
-        if (card) card.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        if (card) {
+          const target = card.offsetLeft - (track.clientWidth - card.clientWidth) / 2;
+          track.scrollTo({ left: Math.max(0, target), behavior: 'smooth' });
+        }
         dotsEl?.querySelectorAll('button').forEach((b, j) => b.classList.toggle('is-active', j === idx));
       }
 

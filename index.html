@@ -134,51 +134,53 @@
   <div class="hp-mobile-nav__backdrop" data-mobile-backdrop></div>
 
   <main>
-    <!-- §02 HERO -->
+    <!-- §02 HERO SLIDER -->
     <section class="hp-hero" data-section="hero" aria-labelledby="hp-hero-h1">
-      <div class="hp-hero__rings" aria-hidden="true">
-        <span class="hp-hero__ring hp-hero__ring--1"></span>
-        <span class="hp-hero__ring hp-hero__ring--2"></span>
-        <span class="hp-hero__ring hp-hero__ring--3"></span>
-      </div>
+      <div class="hp-hero__slides" data-hero-slides aria-hidden="true"></div>
+      <div class="hp-hero__overlay" aria-hidden="true"></div>
 
-      <div class="hp-hero__mags" aria-hidden="true">
-        <div class="hp-hero__mag hp-hero__mag--1" style="background-image:url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800&fm=webp&q=85')"></div>
-        <div class="hp-hero__mag hp-hero__mag--2" style="background-image:url('https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=800&fm=webp&q=85')"></div>
-        <div class="hp-hero__mag hp-hero__mag--3" style="background-image:url('https://images.unsplash.com/photo-1525874684015-58379d421a52?w=800&fm=webp&q=85')"></div>
-        <div class="hp-hero__mag hp-hero__mag--4" style="background-image:url('https://images.unsplash.com/photo-1578095172812-dcc191c5aed8?w=800&fm=webp&q=85')"></div>
-      </div>
-
-      <div class="hp-hero__center">
-        <span class="hp-hero__biglogo" aria-hidden="true"></span>
-        <p class="hp-eyebrow">Private tours · Est. 2014</p>
+      <div class="hp-hero__content">
+        <p class="hp-eyebrow hp-hero__eyebrow">Private tours · Est. 2014</p>
         <h1 id="hp-hero-h1" class="hp-hero__h1">
           <span class="hp-hero__h1-line" data-hero-split>Your trusted</span><br />
           <em class="hp-hero__h1-em" data-hero-em>Private Tour Designer.</em>
         </h1>
         <p class="hp-hero__sub">Expert local guides across eight iconic cities. 100% private groups. Flexible booking. Tours designed around your pace, not a bus schedule.</p>
         <a href="#tours" class="hp-btn hp-btn--primary">Explore all tours →</a>
+
+        <form class="hp-hero__search" action="#" method="get" role="search" aria-label="Search tours">
+          <label class="hp-hero__search-cell">
+            <span>City</span>
+            <select><option>Paris</option><option>Rome</option><option>London</option><option>Barcelona</option><option>Florence</option><option>Prague</option><option>Venice</option><option>New York</option></select>
+          </label>
+          <label class="hp-hero__search-cell">
+            <span>Dates</span><input type="text" placeholder="Add dates" />
+          </label>
+          <label class="hp-hero__search-cell">
+            <span>Guests</span><input type="text" placeholder="2 travellers" />
+          </label>
+          <button type="submit" class="hp-hero__search-go">Search</button>
+        </form>
       </div>
 
-      <form class="hp-hero__search" action="#" method="get" role="search" aria-label="Search tours">
-        <label class="hp-hero__search-cell">
-          <span>City</span>
-          <select><option>Paris</option><option>Rome</option><option>London</option><option>Barcelona</option><option>Florence</option><option>Prague</option><option>Venice</option><option>New York</option></select>
-        </label>
-        <label class="hp-hero__search-cell">
-          <span>Dates</span><input type="text" placeholder="Add dates" />
-        </label>
-        <label class="hp-hero__search-cell">
-          <span>Guests</span><input type="text" placeholder="2 travellers" />
-        </label>
-        <button type="submit" class="hp-hero__search-go">Search</button>
-      </form>
+      <div class="hp-hero__caption" data-hero-caption aria-live="polite">
+        <span class="hp-hero__caption-chapter" data-hero-chapter></span>
+        <span class="hp-hero__caption-name" data-hero-name></span>
+        <span class="hp-hero__caption-tagline" data-hero-tagline></span>
+      </div>
+
+      <div class="hp-hero__indicators" role="tablist" aria-label="Hero slides" data-hero-indicators></div>
+
+      <button class="hp-hero__arrow hp-hero__arrow--prev" data-hero-nav="-1" aria-label="Previous slide">←</button>
+      <button class="hp-hero__arrow hp-hero__arrow--next" data-hero-nav="1" aria-label="Next slide">→</button>
+
+      <div class="hp-hero__scroll-hint" aria-hidden="true">Scroll <span>↓</span></div>
     </section>
 
     <!-- §03 ORBITAL SPLIT -->
     <section class="hp-orbital" data-section="orbital" aria-labelledby="hp-orbital-h2">
       <div class="hp-orbital__inner">
-        <div class="hp-orbital__copy">
+        <div class="hp-orbital__copy" data-reveal>
           <span class="hp-eyebrow">Why travellers trust us</span>
           <h2 id="hp-orbital-h2" class="hp-orbital__h2">
             <span data-orbital-h2-prefix>Together with your Private Tour Designer, we listen, advise, and piece together the perfect private experience — so every moment of your trip becomes </span><em data-orbital-h2-em>real.</em>
@@ -189,7 +191,7 @@
           </div>
         </div>
 
-        <div class="hp-orbital__visual" aria-hidden="true">
+        <div class="hp-orbital__visual" data-reveal aria-hidden="true">
           <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1400&fm=webp&q=85" alt="" />
           <svg class="hp-orbital__ring" viewBox="0 0 360 360" preserveAspectRatio="xMidYMid meet">
             <circle cx="180" cy="180" r="140" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="1" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" data-orbital-ring />
@@ -206,7 +208,7 @@
 
     <!-- §04 + §05 CITIES -->
     <section class="hp-cities" data-section="cities" aria-labelledby="hp-cities-h2">
-      <div class="hp-cities__intro">
+      <div class="hp-cities__intro" data-reveal>
         <p class="hp-eyebrow hp-eyebrow--centered">Our destinations</p>
         <h2 id="hp-cities-h2" class="hp-cities__h2">OUR CITIES</h2>
         <p class="hp-cities__sub">Eight iconic destinations, each led by local experts.</p>
@@ -222,11 +224,11 @@
 
     <!-- §06 WHY -->
     <section class="hp-why" data-section="why" aria-labelledby="hp-why-h2">
-      <div class="hp-why__intro">
+      <div class="hp-why__intro" data-reveal>
         <p class="hp-eyebrow hp-eyebrow--centered">The promise</p>
         <h2 id="hp-why-h2" class="hp-why__h2">Why travellers <em>choose us.</em></h2>
       </div>
-      <div class="hp-why__grid">
+      <div class="hp-why__grid" data-reveal-stagger>
         <article class="hp-why__card">
           <span class="hp-why__icon" aria-hidden="true"></span>
           <h3>Expert local guides.</h3>
@@ -252,18 +254,18 @@
 
     <!-- §07 TOURS -->
     <section class="hp-tours" data-section="tours" aria-labelledby="hp-tours-h2" id="tours">
-      <div class="hp-tours__intro">
+      <div class="hp-tours__intro" data-reveal>
         <p class="hp-eyebrow hp-eyebrow--centered">Signature tours</p>
         <h2 id="hp-tours-h2" class="hp-tours__h2">Private tours, <em>built for you.</em></h2>
       </div>
-      <div class="hp-tours__grid" data-tours-grid></div>
+      <div class="hp-tours__grid" data-tours-grid data-reveal-stagger></div>
       <div class="hp-tours__cta"><a href="#" class="hp-link">Browse all 68 tours →</a></div>
     </section>
 
     <!-- §08 TESTIMONIALS -->
     <section class="hp-testimonials" data-section="testimonials" aria-labelledby="hp-test-h2">
       <h2 id="hp-test-h2" class="sr-only">Traveller testimonials</h2>
-      <div class="hp-testimonials__intro">
+      <div class="hp-testimonials__intro" data-reveal>
         <p class="hp-eyebrow hp-eyebrow--centered">What travellers say</p>
         <h2 aria-hidden="true" class="hp-testimonials__title">Five-star moments.</h2>
       </div>
@@ -274,7 +276,7 @@
     <!-- §09 TRUST -->
     <section class="hp-trust" data-section="trust" aria-label="By the numbers">
       <p class="hp-eyebrow hp-eyebrow--centered">By the numbers</p>
-      <ul class="hp-trust__strip">
+      <ul class="hp-trust__strip" data-reveal-stagger>
         <li><strong data-counter="500000">0</strong><span>Travellers guided</span></li>
         <li><strong>4.9<em>★</em></strong><span>Average rating</span></li>
         <li><strong data-counter="8">0</strong><span>Iconic cities</span></li>
@@ -289,7 +291,7 @@
         <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1920&fm=webp&q=85" alt="" />
       </div>
       <div class="hp-inspire__overlay" aria-hidden="true"></div>
-      <div class="hp-inspire__content">
+      <div class="hp-inspire__content" data-reveal>
         <span class="hp-inspire__mark" aria-hidden="true"></span>
         <p class="hp-eyebrow hp-eyebrow--centered hp-inspire__eyebrow">The inspiration tool</p>
         <h2 id="hp-inspire-h2" class="hp-inspire__h2">Let yourself be <em>inspired.</em></h2>
@@ -300,17 +302,17 @@
 
     <!-- §11 JOURNAL -->
     <section class="hp-journal" data-section="journal" aria-labelledby="hp-journal-h2">
-      <div class="hp-journal__intro">
+      <div class="hp-journal__intro" data-reveal>
         <p class="hp-eyebrow hp-eyebrow--centered">From the Journal</p>
         <h2 id="hp-journal-h2" class="hp-journal__h2">Stories <em>before departure.</em></h2>
       </div>
-      <div class="hp-journal__grid" data-journal-grid></div>
+      <div class="hp-journal__grid" data-journal-grid data-reveal-stagger></div>
       <div class="hp-journal__cta"><a href="../my private tours/blog.html" class="hp-link">Read all stories →</a></div>
     </section>
 
     <!-- §12 DUAL -->
     <section class="hp-dual" data-section="dual" aria-label="Newsletter and partners">
-      <div class="hp-dual__grid">
+      <div class="hp-dual__grid" data-reveal-stagger>
         <div class="hp-dual__card hp-dual__card--news" style="background-image:url('https://images.unsplash.com/photo-1490682143684-14369e18dce8?w=1400&fm=webp&q=85')">
           <div class="hp-dual__overlay"></div>
           <div class="hp-dual__body">
@@ -341,7 +343,7 @@
 
   <!-- §13 FOOTER -->
   <footer class="hp-footer" role="contentinfo" data-section="footer">
-    <div class="hp-footer__top">
+    <div class="hp-footer__top" data-reveal>
       <div class="hp-footer__wordmark-row">
         <span class="hp-logo__mark hp-footer__mark" aria-hidden="true"></span>
         <h2 class="hp-footer__wordmark">MyPrivate<em>Tours</em></h2>
@@ -349,7 +351,7 @@
       <p class="hp-footer__tag">Private tours, expertly designed — across eight cities worldwide.</p>
     </div>
 
-    <div class="hp-footer__grid">
+    <div class="hp-footer__grid" data-reveal-stagger>
       <div>
         <h4>Cities</h4>
         <ul>
