@@ -150,6 +150,96 @@
       }
     });
 
+    // Headline line-reveals: each section's H2 rises line-by-line from a mask.
+    run('initHeadlineReveals', function initHeadlineReveals() {
+      if (typeof SplitType === 'undefined' || typeof gsap === 'undefined') return;
+
+      const headlines = document.querySelectorAll(
+        '.hp-cities__h2, .hp-why__h2, .hp-tours__h2, .hp-testimonials__title, .hp-inspire__h2, .hp-journal__h2'
+      );
+
+      headlines.forEach(h2 => {
+        try {
+          const split = new SplitType(h2, { types: 'lines' });
+          if (!split.lines || split.lines.length === 0) return;
+
+          split.lines.forEach(line => {
+            line.classList.add('line');
+            const inner = document.createElement('span');
+            inner.className = 'line-inner';
+            while (line.firstChild) inner.appendChild(line.firstChild);
+            line.appendChild(inner);
+          });
+
+          const inners = h2.querySelectorAll('.line-inner');
+          gsap.set(inners, { yPercent: 100, opacity: 0 });
+          gsap.to(inners, {
+            yPercent: 0,
+            opacity: 1,
+            duration: .9,
+            stagger: .12,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: h2,
+              start: 'top 82%',
+              once: true,
+            }
+          });
+        } catch (err) {
+          console.warn('initHeadlineReveals: skip', h2, err);
+        }
+      });
+    });
+
+    // Parallax: hero content drifts as hero exits; orbital image zooms subtly.
+    run('initParallax', function initParallax() {
+      if (typeof gsap === 'undefined') return;
+
+      const heroContent = document.querySelector('.hp-hero__content');
+      if (heroContent) {
+        gsap.to(heroContent, {
+          yPercent: -30,
+          opacity: 0.2,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '.hp-hero',
+            start: 'top top',
+            end: 'bottom top',
+            scrub: true,
+          }
+        });
+      }
+
+      const orbitalImg = document.querySelector('.hp-orbital__visual img');
+      if (orbitalImg) {
+        gsap.fromTo(orbitalImg,
+          { scale: 1.04 },
+          {
+            scale: 1.14,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: '.hp-orbital',
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: true,
+            }
+          }
+        );
+      }
+
+      // Section backgrounds drift slightly as user scrolls — subtle depth cue
+      document.querySelectorAll('.hp-testimonials, .hp-why, .hp-trust').forEach(sec => {
+        gsap.fromTo(sec,
+          { backgroundPositionY: '0%' },
+          {
+            backgroundPositionY: '-30%',
+            ease: 'none',
+            scrollTrigger: { trigger: sec, start: 'top bottom', end: 'bottom top', scrub: true }
+          }
+        );
+      });
+    });
+
     // Nav: sticky shadow, mega menus, mobile overlay
     run('initNav', function initNav() {
       const nav = document.querySelector('[data-nav]');
