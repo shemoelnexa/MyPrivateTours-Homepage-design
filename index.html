@@ -128,7 +128,44 @@
 
   <main>
     <!-- §02 HERO -->
-    <section class="hp-hero" data-section="hero"></section>
+    <section class="hp-hero" data-section="hero" aria-labelledby="hp-hero-h1">
+      <div class="hp-hero__rings" aria-hidden="true">
+        <span class="hp-hero__ring hp-hero__ring--1"></span>
+        <span class="hp-hero__ring hp-hero__ring--2"></span>
+        <span class="hp-hero__ring hp-hero__ring--3"></span>
+      </div>
+
+      <div class="hp-hero__mags" aria-hidden="true">
+        <div class="hp-hero__mag hp-hero__mag--1" style="background-image:url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800&fm=webp&q=85')"></div>
+        <div class="hp-hero__mag hp-hero__mag--2" style="background-image:url('https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=800&fm=webp&q=85')"></div>
+        <div class="hp-hero__mag hp-hero__mag--3" style="background-image:url('https://images.unsplash.com/photo-1525874684015-58379d421a52?w=800&fm=webp&q=85')"></div>
+        <div class="hp-hero__mag hp-hero__mag--4" style="background-image:url('https://images.unsplash.com/photo-1578095172812-dcc191c5aed8?w=800&fm=webp&q=85')"></div>
+      </div>
+
+      <div class="hp-hero__center">
+        <span class="hp-hero__biglogo" aria-hidden="true"></span>
+        <p class="hp-eyebrow">Private tours · Est. 2014</p>
+        <h1 id="hp-hero-h1" class="hp-hero__h1" data-split-words>
+          Your trusted<br /><em>Private Tour Designer.</em>
+        </h1>
+        <p class="hp-hero__sub">Expert local guides across eight iconic cities. 100% private groups. Flexible booking. Tours designed around your pace, not a bus schedule.</p>
+        <a href="#tours" class="hp-btn hp-btn--primary">Explore all tours →</a>
+      </div>
+
+      <form class="hp-hero__search" action="#" method="get" role="search" aria-label="Search tours">
+        <label class="hp-hero__search-cell">
+          <span>City</span>
+          <select><option>Paris</option><option>Rome</option><option>London</option><option>Barcelona</option><option>Florence</option><option>Prague</option><option>Venice</option><option>New York</option></select>
+        </label>
+        <label class="hp-hero__search-cell">
+          <span>Dates</span><input type="text" placeholder="Add dates" />
+        </label>
+        <label class="hp-hero__search-cell">
+          <span>Guests</span><input type="text" placeholder="2 travellers" />
+        </label>
+        <button type="submit" class="hp-hero__search-go">Search</button>
+      </form>
+    </section>
 
     <!-- §03 ORBITAL SPLIT -->
     <section class="hp-orbital" data-section="orbital"></section>

@@ -185,5 +185,37 @@
       closeBtn.addEventListener('click', closeMobile);
       backdrop.addEventListener('click', closeMobile);
     })();
+
+    // ── Hero: rings fade, magazines fly in, headline split, parallax ──
+    (function initHero() {
+      if (MPT.isReducedMotion()) {
+        document.querySelectorAll('.hp-hero__ring').forEach(r => r.style.opacity = .12);
+        document.querySelectorAll('.hp-hero__mag').forEach(m => m.style.opacity = 1);
+        return;
+      }
+
+      const rings = document.querySelectorAll('.hp-hero__ring');
+      const mags  = document.querySelectorAll('.hp-hero__mag');
+      const title = document.querySelector('[data-split-words]');
+
+      gsap.set(rings, { scale: .85, opacity: 0 });
+      gsap.to(rings, { scale: 1, opacity: .12, duration: .9, ease: 'power3.out', stagger: .12, delay: .1 });
+
+      mags.forEach((m, i) => {
+        const initialX = m.classList.contains('hp-hero__mag--1') || m.classList.contains('hp-hero__mag--2') ? -40 : 40;
+        const initialY = m.classList.contains('hp-hero__mag--1') || m.classList.contains('hp-hero__mag--3') ? -30 : 30;
+        gsap.fromTo(m, { x: initialX, y: initialY, opacity: 0 }, { x: 0, y: 0, opacity: 1, duration: .7, ease: 'power3.out', delay: .3 + i * .1 });
+
+        gsap.to(m, {
+          y: ['-15%','-8%','-20%','-11%'][i] || '-10%',
+          ease: 'none',
+          scrollTrigger: { trigger: '.hp-hero', start: 'top top', end: 'bottom top', scrub: true }
+        });
+      });
+
+      if (title) {
+        MPT.splitAndAnimate(title, { split: 'words', stagger: .08, duration: .5, ease: 'power3.out', from: { y: 20 }, start: 'top 90%' });
+      }
+    })();
   });
 })();

@@ -88,3 +88,64 @@ body.hp { background: var(--mpt-off); color: var(--mpt-ink); }
 /* WhatsApp float */
 .hp-whatsapp { position: fixed; bottom: 24px; right: 24px; width: 56px; height: 56px; border-radius: 50%; background: var(--mpt-cream); color: var(--mpt-ink); display: flex; align-items: center; justify-content: center; border: 1.5px solid var(--mpt-orange); box-shadow: 0 10px 30px rgba(0,0,0,.14); z-index: 80; transition: transform .2s; }
 .hp-whatsapp:hover { transform: scale(1.06); }
+
+/* ============================================================
+   Shared typographic utilities
+   ============================================================ */
+.hp-eyebrow { font-size: 11px; font-weight: 800; letter-spacing: .3em; text-transform: uppercase; color: var(--mpt-ink); opacity: .6; display: inline-flex; align-items: center; gap: 12px; }
+.hp-eyebrow::before { content: ""; width: 34px; height: 1px; background: var(--mpt-orange); display: inline-block; }
+.hp-eyebrow--centered { display: block; text-align: center; }
+.hp-eyebrow--centered::before { display: block; width: 44px; margin: 0 auto 10px; }
+
+.hp-btn { display: inline-flex; align-items: center; gap: 6px; font-weight: 800; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; border-radius: var(--r-pill); padding: 16px 34px; transition: transform .18s var(--ease-out), box-shadow .18s var(--ease-out), background .18s; }
+.hp-btn--primary { background: var(--mpt-orange); color: #fff; box-shadow: 0 14px 36px rgba(224,101,60,.3); }
+.hp-btn--primary:hover { transform: translateY(-2px); box-shadow: 0 18px 42px rgba(224,101,60,.4); background: #CB5530; }
+.hp-btn--primary:active { transform: translateY(0) scale(.98); }
+.hp-btn--ghost { background: transparent; color: var(--mpt-ink); border: 1.5px solid var(--mpt-ink); }
+.hp-btn--ghost:hover { background: var(--mpt-ink); color: #fff; }
+
+/* ============================================================
+   §02 HERO
+   ============================================================ */
+.hp-hero { position: relative; min-height: clamp(640px, 88vh, 820px); background: var(--mpt-cream); overflow: hidden; padding: 80px 40px 120px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+
+.hp-hero__rings { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+.hp-hero__ring { position: absolute; border: 1px solid rgba(37,37,37,.08); border-radius: 50%; opacity: 0; }
+.hp-hero__ring--1 { width: 720px; height: 720px; }
+.hp-hero__ring--2 { width: 540px; height: 540px; }
+.hp-hero__ring--3 { width: 360px; height: 360px; }
+
+.hp-hero__mags { position: absolute; inset: 0; pointer-events: none; }
+.hp-hero__mag { position: absolute; background-size: cover; background-position: center; border-radius: 4px; box-shadow: 0 22px 50px rgba(37,37,37,.18); opacity: 0; }
+.hp-hero__mag--1 { width: 240px; aspect-ratio: 4/5; left: 4%;  top: 10%; transform: rotate(-11deg); }
+.hp-hero__mag--2 { width: 200px; aspect-ratio: 3/4; left: 14%; top: 54%; transform: rotate(6deg); }
+.hp-hero__mag--3 { width: 220px; aspect-ratio: 4/5; right: 6%; top: 9%;  transform: rotate(9deg); }
+.hp-hero__mag--4 { width: 210px; aspect-ratio: 3/4; right: 14%;top: 56%; transform: rotate(-5deg); }
+
+.hp-hero__center { position: relative; z-index: 3; max-width: 640px; text-align: center; padding: 20px; }
+.hp-hero__biglogo { position: relative; display: block; width: 54px; height: 54px; margin: 0 auto 18px; border: 1.5px solid var(--mpt-orange); border-radius: 50%; background: var(--mpt-cream); }
+.hp-hero__biglogo::after { content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 16px; height: 16px; background: var(--mpt-orange); border-radius: 50%; }
+.hp-hero__biglogo::before { content: ""; position: absolute; top: 50%; left: 50%; width: 72px; height: 20px; border: 1px solid rgba(224,101,60,.55); border-radius: 50%; transform: translate(-50%, -50%) rotate(-18deg); }
+
+.hp-hero__h1 { font-family: var(--font-sans); font-weight: 900; font-size: clamp(40px, 6.8vw, 64px); line-height: .98; letter-spacing: -.035em; margin: 10px 0 14px; }
+.hp-hero__h1 em { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: var(--mpt-orange); font-size: .88em; }
+.hp-hero__sub { font-size: clamp(15px, 1.4vw, 17px); line-height: 1.55; max-width: 500px; margin: 0 auto 26px; opacity: .75; }
+
+.hp-hero__search { position: absolute; bottom: 34px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; background: var(--mpt-off); border: 1px solid rgba(37,37,37,.08); border-radius: var(--r-pill); padding: 6px 6px 6px 22px; max-width: 580px; width: calc(100% - 80px); box-shadow: 0 18px 46px rgba(37,37,37,.14); z-index: 4; }
+.hp-hero__search-cell { display: flex; flex-direction: column; padding: 8px 18px; border-right: 1px solid rgba(37,37,37,.1); flex: 1; min-width: 0; }
+.hp-hero__search-cell:last-of-type { border: none; }
+.hp-hero__search-cell span { font-size: 10px; letter-spacing: .2em; text-transform: uppercase; font-weight: 800; opacity: .55; }
+.hp-hero__search-cell input, .hp-hero__search-cell select { font-size: 13px; font-weight: 700; color: var(--mpt-ink); border: 0; outline: 0; background: transparent; font-family: inherit; padding: 2px 0; width: 100%; }
+.hp-hero__search-cell input::placeholder { color: var(--mpt-ink); opacity: .45; font-weight: 500; }
+.hp-hero__search-go { background: var(--mpt-orange); color: #fff; border-radius: var(--r-pill); padding: 12px 22px; font-weight: 800; font-size: 12px; letter-spacing: .04em; text-transform: uppercase; cursor: pointer; }
+.hp-hero__search-go:hover { background: #CB5530; }
+
+@media (max-width: 900px) {
+  .hp-hero__mag { display: none; }
+  .hp-hero__ring--1 { width: 560px; height: 560px; }
+  .hp-hero__ring--2 { width: 400px; height: 400px; }
+  .hp-hero__ring--3 { width: 260px; height: 260px; }
+  .hp-hero__search { flex-wrap: wrap; border-radius: var(--r-lg); padding: 10px; }
+  .hp-hero__search-cell { border: none; padding: 10px; border-bottom: 1px solid rgba(37,37,37,.1); flex-basis: 100%; }
+  .hp-hero__search-go { width: 100%; margin-top: 8px; padding: 14px; }
+}
