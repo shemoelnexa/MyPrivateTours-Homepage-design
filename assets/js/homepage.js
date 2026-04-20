@@ -102,55 +102,85 @@
     try { fn(); } catch (err) { console.error('[' + name + '] failed:', err); }
   }
 
-  // Preloader: hide once fonts + images + async fetches are all done, with a
-  // hard 4s fallback so the page never stays stuck behind the splash.
-  function hidePreloader() {
-    if (document.body && document.body.classList.contains('is-loading')) {
-      document.body.classList.remove('is-loading');
-    }
+  // Animation orchestration: defer reveals/GSAP setups until the preloader
+  // begins fading. Without this, they fire behind the splash and the user
+  // sees only the final static state.
+  let animationsReady = false;
+  const animQueue = [];
+  function afterAnimations(fn) {
+    if (animationsReady) { try { fn(); } catch (e) { console.error(e); } }
+    else animQueue.push(fn);
   }
-  window.addEventListener('load', () => setTimeout(hidePreloader, 200));
-  setTimeout(hidePreloader, 4000);
+  function startAnimations() {
+    if (animationsReady) return;
+    animationsReady = true;
+    document.body.classList.add('js-ready');
+    animQueue.forEach(fn => { try { fn(); } catch (e) { console.error(e); } });
+    animQueue.length = 0;
+    if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+  }
+
+  // Preloader: hide once page ready. Animations fire as preloader starts
+  // fading so the user actually sees them.
+  const preloaderStart = performance.now();
+  const PRELOAD_MIN = 700;
+  const PRELOAD_MAX = 2800;
+  function hidePreloader() {
+    if (!document.body || !document.body.classList.contains('is-loading')) return;
+    document.body.classList.remove('is-loading');
+    // Trigger animations one frame later so the preloader fade-out can begin
+    // and content isn't occluded when the first reveals run.
+    requestAnimationFrame(() => setTimeout(startAnimations, 80));
+  }
+  function hidePreloaderRespectingMin() {
+    const elapsed = performance.now() - preloaderStart;
+    const wait = Math.max(0, PRELOAD_MIN - elapsed);
+    setTimeout(hidePreloader, wait);
+  }
+  window.addEventListener('load', hidePreloaderRespectingMin);
+  setTimeout(hidePreloader, PRELOAD_MAX);
 
   function boot() {
-    // Mark the page as JS-ready so reveal styles activate.
-    document.body.classList.add('js-ready');
+    // js-ready is deferred to startAnimations() so the reveal styles don't
+    // collapse content before the preloader fades.
 
-    // Universal scroll-reveal: adds `is-in-view` when blocks enter the viewport.
+    // Universal scroll-reveal: deferred until preloader fades so blocks in
+    // the initial viewport reveal visibly instead of loading already-revealed.
     run('initReveal', function initReveal() {
-      if (!('IntersectionObserver' in window)) {
-        document.querySelectorAll('[data-reveal],[data-reveal-stagger]').forEach(el => el.classList.add('is-in-view'));
-        return;
-      }
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach(e => {
-          if (e.isIntersecting) {
-            e.target.classList.add('is-in-view');
-            io.unobserve(e.target);
-          }
-        });
-      }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
-      document.querySelectorAll('[data-reveal],[data-reveal-stagger]').forEach(el => io.observe(el));
-
-      // Safety net: if anything remains hidden after 3s (e.g., observer hiccup
-      // on a background tab), force-show it so content is never stuck invisible.
-      setTimeout(() => {
-        document.querySelectorAll('[data-reveal]:not(.is-in-view),[data-reveal-stagger]:not(.is-in-view)').forEach(el => el.classList.add('is-in-view'));
-      }, 3000);
-
-      // Inspire section uses ::before curtain wipe — watch the section itself
-      const inspire = document.querySelector('.hp-inspire');
-      if (inspire) {
-        const io2 = new IntersectionObserver((entries) => {
+      afterAnimations(() => {
+        if (!('IntersectionObserver' in window)) {
+          document.querySelectorAll('[data-reveal],[data-reveal-stagger]').forEach(el => el.classList.add('is-in-view'));
+          return;
+        }
+        const io = new IntersectionObserver((entries) => {
           entries.forEach(e => {
-            if (e.isIntersecting) { e.target.classList.add('is-in-view'); io2.unobserve(e.target); }
+            if (e.isIntersecting) {
+              e.target.classList.add('is-in-view');
+              io.unobserve(e.target);
+            }
           });
-        }, { threshold: 0.25 });
-        io2.observe(inspire);
-      }
+        }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+        document.querySelectorAll('[data-reveal],[data-reveal-stagger]').forEach(el => io.observe(el));
+
+        // Safety net: force-show anything still hidden after 3s.
+        setTimeout(() => {
+          document.querySelectorAll('[data-reveal]:not(.is-in-view),[data-reveal-stagger]:not(.is-in-view)').forEach(el => el.classList.add('is-in-view'));
+        }, 3000);
+
+        // Inspire curtain
+        const inspire = document.querySelector('.hp-inspire');
+        if (inspire) {
+          const io2 = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+              if (e.isIntersecting) { e.target.classList.add('is-in-view'); io2.unobserve(e.target); }
+            });
+          }, { threshold: 0.25 });
+          io2.observe(inspire);
+        }
+      });
     });
 
-    // Headline line-reveals: each section's H2 rises line-by-line from a mask.
+    // Headline line-reveals: deferred until preloader fades.
     run('initHeadlineReveals', function initHeadlineReveals() {
       if (typeof SplitType === 'undefined' || typeof gsap === 'undefined') return;
 
@@ -158,6 +188,7 @@
         '.hp-cities__h2, .hp-why__h2, .hp-tours__h2, .hp-testimonials__title, .hp-inspire__h2, .hp-journal__h2'
       );
 
+      // Pre-split markup immediately so content is ready; defer the tween.
       headlines.forEach(h2 => {
         try {
           const split = new SplitType(h2, { types: 'lines' });
@@ -173,17 +204,20 @@
 
           const inners = h2.querySelectorAll('.line-inner');
           gsap.set(inners, { yPercent: 100, opacity: 0 });
-          gsap.to(inners, {
-            yPercent: 0,
-            opacity: 1,
-            duration: .9,
-            stagger: .12,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: h2,
-              start: 'top 82%',
-              once: true,
-            }
+
+          afterAnimations(() => {
+            gsap.to(inners, {
+              yPercent: 0,
+              opacity: 1,
+              duration: .9,
+              stagger: .12,
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: h2,
+                start: 'top 82%',
+                once: true,
+              }
+            });
           });
         } catch (err) {
           console.warn('initHeadlineReveals: skip', h2, err);
@@ -194,6 +228,7 @@
     // Parallax: hero content drifts as hero exits; orbital image zooms subtly.
     run('initParallax', function initParallax() {
       if (typeof gsap === 'undefined') return;
+      afterAnimations(() => {
 
       const heroContent = document.querySelector('.hp-hero__content');
       if (heroContent) {
@@ -238,6 +273,8 @@
           }
         );
       });
+
+      }); // end afterAnimations
     });
 
     // Nav: sticky shadow, mega menus, mobile overlay
@@ -400,15 +437,36 @@
 
       startAuto();
 
-      // Headline reveal (same pattern as before)
+      // Hero entry: stagger the whole content column in after preloader fades.
+      // Pre-hide everything via GSAP so it can't flash.
+      const heroEyebrow = document.querySelector('.hp-hero__eyebrow');
       const line1 = document.querySelector('[data-hero-split]');
       const line2 = document.querySelector('[data-hero-em]');
-      if (line1 && typeof MPT !== 'undefined' && MPT.splitAndAnimate) {
-        MPT.splitAndAnimate(line1, { split: 'words', stagger: .09, duration: .6, ease: 'power3.out', from: { y: 28 }, start: 'top 100%' });
+      const heroSub = document.querySelector('.hp-hero__sub');
+      const heroCta = document.querySelector('.hp-hero__content .hp-btn--primary');
+      const heroSearch = document.querySelector('.hp-hero__search');
+
+      if (typeof gsap !== 'undefined') {
+        gsap.set([heroEyebrow, line1, line2, heroSub, heroCta, heroSearch].filter(Boolean), { opacity: 0, y: 30 });
       }
-      if (line2 && typeof gsap !== 'undefined') {
-        gsap.from(line2, { y: 30, opacity: 0, duration: .8, delay: .5, ease: 'power3.out' });
-      }
+
+      afterAnimations(() => {
+        if (typeof gsap === 'undefined') return;
+        const tl = gsap.timeline({ defaults: { ease: 'power3.out', duration: .9 } });
+        if (heroEyebrow) tl.to(heroEyebrow, { opacity: 1, y: 0, duration: .6 });
+        if (line1 && MPT?.splitAndAnimate) {
+          tl.add(() => MPT.splitAndAnimate(line1, {
+            split: 'words', stagger: .08, duration: .7, ease: 'power3.out', from: { y: 40 }, start: 'top 100%'
+          }), '-=0.2');
+          tl.to(line1, { opacity: 1, y: 0, duration: .7 }, '<');
+        } else if (line1) {
+          tl.to(line1, { opacity: 1, y: 0 }, '-=0.3');
+        }
+        if (line2) tl.to(line2, { opacity: 1, y: 0, duration: .9 }, '-=0.4');
+        if (heroSub) tl.to(heroSub, { opacity: 1, y: 0, duration: .7 }, '-=0.5');
+        if (heroCta) tl.to(heroCta, { opacity: 1, y: 0, duration: .6 }, '-=0.4');
+        if (heroSearch) tl.to(heroSearch, { opacity: 1, y: 0, duration: .6 }, '-=0.4');
+      });
     });
 
     // ── Orbital: ring stroke-draws, labels fade in around circle ──
@@ -421,35 +479,23 @@
       const h2Pre  = section.querySelector('[data-orbital-h2-prefix]');
       const h2Em   = section.querySelector('[data-orbital-h2-em]');
 
-      // Split the prefix text only; animate the <em> as a whole so its italic/colour treatment survives.
-      if (h2Pre) {
-        MPT.splitAndAnimate(h2Pre, { split: 'words', stagger: .05, duration: .5, from: { y: 16 }, start: 'top 85%' });
-      }
-      if (h2Em) {
-        if (MPT.isReducedMotion()) {
-          h2Em.style.opacity = 1;
-        } else {
+      afterAnimations(() => {
+        if (h2Pre) {
+          MPT.splitAndAnimate(h2Pre, { split: 'words', stagger: .05, duration: .5, from: { y: 16 }, start: 'top 85%' });
+        }
+        if (h2Em) {
           gsap.from(h2Em, {
-            y: 16,
-            opacity: 0,
-            duration: .5,
-            ease: 'power3.out',
+            y: 16, opacity: 0, duration: .5, ease: 'power3.out',
             scrollTrigger: { trigger: section, start: 'top 85%', once: true },
             delay: .35,
           });
         }
-      }
 
-      if (MPT.isReducedMotion()) {
-        if (ring) ring.setAttribute('stroke-dashoffset', '0');
-        labels.forEach(l => { l.style.opacity = 1; });
-        return;
-      }
-
-      const tl = gsap.timeline({ scrollTrigger: { trigger: section, start: 'top 70%', once: true } });
-      if (ring) tl.to(ring, { strokeDashoffset: 0, duration: .9, ease: 'power2.out' });
-      labels.forEach((l, i) => {
-        tl.to(l, { opacity: 1, x: 0, y: 0, duration: .4, ease: 'power2.out' }, `>${i === 0 ? '-0.5' : '-0.25'}`);
+        const tl = gsap.timeline({ scrollTrigger: { trigger: section, start: 'top 70%', once: true } });
+        if (ring) tl.to(ring, { strokeDashoffset: 0, duration: .9, ease: 'power2.out' });
+        labels.forEach((l, i) => {
+          tl.to(l, { opacity: 1, x: 0, y: 0, duration: .4, ease: 'power2.out' }, `>${i === 0 ? '-0.5' : '-0.25'}`);
+        });
       });
     });
 
@@ -613,20 +659,18 @@
 
     // ── Trust: animate counters on scroll-in ──
     run('initTrust', function initTrust() {
-      document.querySelectorAll('[data-counter]').forEach(el => {
-        const target = parseInt(el.dataset.counter, 10);
-        const suffix = target === 500000 ? '+' : '';
-        if (MPT.isReducedMotion()) {
-          el.textContent = target.toLocaleString() + suffix;
-          return;
-        }
-        const obj = { n: 0 };
-        gsap.to(obj, {
-          n: target,
-          duration: 1.6,
-          ease: 'power2.out',
-          scrollTrigger: { trigger: el, start: 'top 85%', once: true },
-          onUpdate: () => { el.textContent = Math.round(obj.n).toLocaleString() + suffix; },
+      afterAnimations(() => {
+        document.querySelectorAll('[data-counter]').forEach(el => {
+          const target = parseInt(el.dataset.counter, 10);
+          const suffix = target === 500000 ? '+' : '';
+          const obj = { n: 0 };
+          gsap.to(obj, {
+            n: target,
+            duration: 1.6,
+            ease: 'power2.out',
+            scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+            onUpdate: () => { el.textContent = Math.round(obj.n).toLocaleString() + suffix; },
+          });
         });
       });
     });
