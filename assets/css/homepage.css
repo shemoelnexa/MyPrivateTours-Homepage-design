@@ -332,3 +332,26 @@ body.hp { background: var(--mpt-off); color: var(--mpt-ink); }
 @media (prefers-reduced-motion: reduce) {
   .hp-inspire__bg img, .hp-btn--glow { animation: none; }
 }
+
+/* ============================================================
+   §11 JOURNAL
+   ============================================================ */
+.hp-journal { background: var(--mpt-off); padding: 110px 0; }
+.hp-journal__intro { max-width: var(--container-wide); margin: 0 auto 44px; padding: 0 40px; text-align: center; }
+.hp-journal__h2 { font-family: var(--font-sans); font-weight: 900; font-size: clamp(32px, 4.2vw, 44px); letter-spacing: -.03em; line-height: 1.05; margin-top: 14px; }
+.hp-journal__h2 em { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: var(--mpt-orange); }
+
+.hp-journal__grid { max-width: var(--container-wide); margin: 0 auto; padding: 0 40px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.hp-journal-card { display: block; transition: transform .2s var(--ease-out); }
+.hp-journal-card:hover { transform: translateY(-4px); }
+.hp-journal-card__img { aspect-ratio: 16/9; border-radius: var(--r-md); overflow: hidden; margin-bottom: 14px; }
+.hp-journal-card__img img { width: 100%; height: 100%; object-fit: cover; transition: transform .36s var(--ease-out); }
+.hp-journal-card:hover .hp-journal-card__img img { transform: scale(1.04); }
+.hp-journal-card__tag { display: inline-block; font-size: 10px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--mpt-orange); background: var(--mpt-orange-soft); padding: 4px 10px; border-radius: var(--r-pill); margin-bottom: 10px; }
+.hp-journal-card h3 { font-family: var(--font-serif); font-style: italic; font-weight: 400; font-size: 22px; line-height: 1.3; letter-spacing: -.01em; margin-bottom: 6px; transition: color .2s; }
+.hp-journal-card:hover h3 { color: var(--mpt-orange); }
+.hp-journal-card__meta { font-size: 11px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; opacity: .55; }
+
+.hp-journal__cta { text-align: center; margin-top: 44px; }
+
+@media (max-width: 900px) { .hp-journal__grid { grid-template-columns: 1fr; } }

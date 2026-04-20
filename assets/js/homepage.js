@@ -421,5 +421,30 @@
         });
       });
     })();
+
+    // ── Journal: render from blog-posts.json ──
+    (async function initJournal() {
+      const grid = document.querySelector('[data-journal-grid]');
+      if (!grid) return;
+
+      const res = await fetch('assets/data/blog-posts.json');
+      const posts = await res.json();
+
+      const fmt = (iso) => {
+        const d = new Date(iso);
+        return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+      };
+
+      grid.innerHTML = posts.map(p => `
+        <a href="../my private tours/blog-article.html" class="hp-journal-card">
+          <div class="hp-journal-card__img">
+            <img src="${p.image}" alt="${p.title}" loading="lazy" />
+          </div>
+          <span class="hp-journal-card__tag">${p.tag}</span>
+          <h3>${p.title}</h3>
+          <div class="hp-journal-card__meta">${p.readTime} read · ${fmt(p.date)}</div>
+        </a>
+      `).join('');
+    })();
   });
 })();
