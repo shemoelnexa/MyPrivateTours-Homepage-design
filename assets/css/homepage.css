@@ -309,3 +309,26 @@ body.hp { background: var(--mpt-off); color: var(--mpt-ink); }
   .hp-trust__strip li { border-right: 0; border-bottom: 1px solid rgba(37,37,37,.08); }
   .hp-trust__strip li:last-child { grid-column: 1 / -1; border: 0; }
 }
+
+/* ============================================================
+   §10 INSPIRE — dark Ken Burns
+   ============================================================ */
+.hp-inspire { position: relative; min-height: 520px; overflow: hidden; color: #fff; display: flex; align-items: center; justify-content: center; }
+.hp-inspire__bg { position: absolute; inset: 0; }
+.hp-inspire__bg img { width: 100%; height: 100%; object-fit: cover; animation: kenBurns 20s ease-in-out infinite alternate; }
+@keyframes kenBurns { from { transform: scale(1) translateX(0); } to { transform: scale(1.05) translateX(-2%); } }
+.hp-inspire__overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(15,9,7,.55) 0%, rgba(15,9,7,.72) 100%); }
+.hp-inspire__content { position: relative; z-index: 2; text-align: center; padding: 80px 40px; max-width: 680px; }
+.hp-inspire__mark { display: block; width: 52px; height: 52px; margin: 0 auto 16px; border: 1.5px solid rgba(255,255,255,.7); border-radius: 50%; position: relative; }
+.hp-inspire__mark::after { content: ""; position: absolute; inset: 18px; background: rgba(255,255,255,.85); border-radius: 50%; }
+.hp-inspire__eyebrow { color: var(--mpt-sand); opacity: .9; }
+.hp-inspire__eyebrow::before { background: var(--mpt-sand); }
+.hp-inspire__h2 { font-family: var(--font-serif); font-style: italic; font-weight: 400; font-size: clamp(38px, 5vw, 56px); letter-spacing: -.02em; line-height: 1.05; margin: 12px 0 18px; color: #fff; }
+.hp-inspire__h2 em { color: var(--mpt-sand); }
+.hp-inspire__body { font-size: 16px; line-height: 1.55; opacity: .88; max-width: 520px; margin: 0 auto 26px; }
+.hp-btn--glow { animation: ctaGlow 3s ease-in-out infinite; }
+@keyframes ctaGlow { 0%,100% { box-shadow: 0 14px 36px rgba(224,101,60,.3); } 50% { box-shadow: 0 14px 36px rgba(224,101,60,.3), 0 0 40px rgba(224,101,60,.25); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .hp-inspire__bg img, .hp-btn--glow { animation: none; }
+}
