@@ -292,3 +292,20 @@ body.hp { background: var(--mpt-off); color: var(--mpt-ink); }
 .hp-testimonials__dots button.is-active { background: var(--mpt-orange); transform: scale(1.25); }
 
 @media (max-width: 560px) { .hp-review { flex-basis: calc(100vw - 80px); } }
+
+/* ============================================================
+   §09 TRUST
+   ============================================================ */
+.hp-trust { background: var(--mpt-off); padding: 80px 0; text-align: center; }
+.hp-trust__strip { max-width: var(--container-wide); margin: 24px auto 0; padding: 0 40px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; align-items: center; }
+.hp-trust__strip li { padding: 20px; border-right: 1px solid rgba(37,37,37,.1); display: flex; flex-direction: column; gap: 6px; align-items: center; }
+.hp-trust__strip li:last-child { border-right: 0; }
+.hp-trust__strip strong { font-weight: 900; font-size: clamp(32px, 4vw, 48px); letter-spacing: -.02em; line-height: 1; font-variant-numeric: tabular-nums; }
+.hp-trust__strip strong em { color: var(--mpt-orange); font-style: normal; font-size: .6em; }
+.hp-trust__strip span { font-size: 11px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; opacity: .55; }
+
+@media (max-width: 760px) {
+  .hp-trust__strip { grid-template-columns: repeat(2, 1fr); gap: 0; }
+  .hp-trust__strip li { border-right: 0; border-bottom: 1px solid rgba(37,37,37,.08); }
+  .hp-trust__strip li:last-child { grid-column: 1 / -1; border: 0; }
+}

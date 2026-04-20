@@ -401,5 +401,25 @@
       track.addEventListener('mouseleave', startAuto);
       startAuto();
     })();
+
+    // ── Trust: animate counters on scroll-in ──
+    (function initTrust() {
+      document.querySelectorAll('[data-counter]').forEach(el => {
+        const target = parseInt(el.dataset.counter, 10);
+        const suffix = target === 500000 ? '+' : '';
+        if (MPT.isReducedMotion()) {
+          el.textContent = target.toLocaleString() + suffix;
+          return;
+        }
+        const obj = { n: 0 };
+        gsap.to(obj, {
+          n: target,
+          duration: 1.6,
+          ease: 'power2.out',
+          scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+          onUpdate: () => { el.textContent = Math.round(obj.n).toLocaleString() + suffix; },
+        });
+      });
+    })();
   });
 })();
