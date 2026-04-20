@@ -1,0 +1,57 @@
+/* ==========================================================================
+   MyPrivateTours.com — Base reset + utilities
+   Shared across all three concepts.
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..700;1,400..700&family=Nunito:wght@400;500;700;800;900&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: auto; } /* Lenis handles smooth-scroll */
+body {
+  font-family: var(--font-sans);
+  color: var(--mpt-ink);
+  background: var(--mpt-off);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+img, picture, video { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+button { border: 0; background: transparent; cursor: pointer; font: inherit; color: inherit; }
+ul, ol { list-style: none; }
+
+/* Screen-reader-only utility */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); border: 0;
+}
+
+/* Generic container */
+.container {
+  width: 100%;
+  max-width: var(--container-wide);
+  margin: 0 auto;
+  padding: 0 40px;
+}
+@media (max-width: 768px) {
+  .container { padding: 0 20px; }
+}
+
+/* Focus rings — concepts override accent color */
+:focus-visible {
+  outline: 2px solid var(--mpt-orange);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Reduced motion — stop all transforms/transitions beyond 200ms fades */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 200ms !important;
+    scroll-behavior: auto !important;
+  }
+}

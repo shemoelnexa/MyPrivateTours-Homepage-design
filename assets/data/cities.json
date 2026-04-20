@@ -1,0 +1,10 @@
+[
+  { "name": "Paris",     "slug": "paris",     "country": "France",         "countryCode": "FR", "tourCount": 12, "tagline": "Light, art, and slow afternoons.", "image": "https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?w=1920&fm=webp&q=85" },
+  { "name": "Rome",      "slug": "rome",      "country": "Italy",          "countryCode": "IT", "tourCount": 9,  "tagline": "Three millennia, one walk.",         "image": "https://images.unsplash.com/photo-1515542483964-5e8c63d7d89b?w=1920&fm=webp&q=85" },
+  { "name": "London",    "slug": "london",    "country": "United Kingdom", "countryCode": "UK", "tourCount": 10, "tagline": "Royal, rebellious, rain-lit.",       "image": "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=1920&fm=webp&q=85" },
+  { "name": "Barcelona", "slug": "barcelona", "country": "Spain",          "countryCode": "ES", "tourCount": 8,  "tagline": "Gaudí mornings, tapas nights.",      "image": "https://images.unsplash.com/photo-1578095172812-dcc191c5aed8?w=1920&fm=webp&q=85" },
+  { "name": "Florence",  "slug": "florence",  "country": "Italy",          "countryCode": "IT", "tourCount": 7,  "tagline": "Where the Renaissance still breathes.", "image": "https://images.unsplash.com/photo-1748641172448-e33ba1d0390b?w=1920&fm=webp&q=85" },
+  { "name": "Prague",    "slug": "prague",    "country": "Czech Republic", "countryCode": "CZ", "tourCount": 6,  "tagline": "Gothic bones, golden hour.",         "image": "https://images.unsplash.com/photo-1763305102178-4448e7a5a7a0?w=1920&fm=webp&q=85" },
+  { "name": "Venice",    "slug": "venice",    "country": "Italy",          "countryCode": "IT", "tourCount": 6,  "tagline": "Water streets, whispered palaces.",  "image": "https://images.unsplash.com/photo-1511135570219-bbad9a02f103?w=1920&fm=webp&q=85" },
+  { "name": "New York",  "slug": "new-york",  "country": "USA",            "countryCode": "US", "tourCount": 5,  "tagline": "The city that rewrites itself.",     "image": "https://images.unsplash.com/photo-1754766621748-2a96cbf56a1f?w=1920&fm=webp&q=85" }
+]
