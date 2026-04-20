@@ -356,5 +356,50 @@
         </a>
       `).join('');
     })();
+
+    // ── Testimonials: render from testimonials.json, auto-advance 8s ──
+    (async function initTestimonials() {
+      const track = document.querySelector('[data-reviews-track]');
+      const dotsEl = document.querySelector('[data-reviews-dots]');
+      if (!track) return;
+
+      const res = await fetch('assets/data/testimonials.json');
+      const reviews = await res.json();
+
+      const monthYear = 'April 2026';
+
+      track.innerHTML = reviews.map(r => `
+        <article class="hp-review">
+          <div class="hp-review__stars">${'★'.repeat(r.rating)}</div>
+          <p class="hp-review__quote">"${r.quote}"</p>
+          <div class="hp-review__rule"></div>
+          <div class="hp-review__meta">${r.name} · ${r.city} · ${monthYear}</div>
+        </article>
+      `).join('');
+
+      if (dotsEl) {
+        dotsEl.innerHTML = reviews.map((_, i) => `<button type="button" data-dot="${i}" class="${i === 0 ? 'is-active' : ''}" aria-label="Review ${i + 1}"></button>`).join('');
+      }
+
+      let idx = 0;
+      function scrollToIdx(i) {
+        idx = (i + reviews.length) % reviews.length;
+        const card = track.children[idx];
+        if (card) card.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        dotsEl?.querySelectorAll('button').forEach((b, j) => b.classList.toggle('is-active', j === idx));
+      }
+
+      dotsEl?.addEventListener('click', e => {
+        const b = e.target.closest('[data-dot]');
+        if (b) { scrollToIdx(parseInt(b.dataset.dot, 10)); stopAuto(); startAuto(); }
+      });
+
+      let auto;
+      function startAuto() { stopAuto(); auto = setInterval(() => scrollToIdx(idx + 1), 8000); }
+      function stopAuto() { if (auto) { clearInterval(auto); auto = null; } }
+      track.addEventListener('mouseenter', stopAuto);
+      track.addEventListener('mouseleave', startAuto);
+      startAuto();
+    })();
   });
 })();
