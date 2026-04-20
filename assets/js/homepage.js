@@ -221,5 +221,47 @@
         gsap.from(line2, { y: 20, opacity: 0, duration: .6, delay: .55, ease: 'power3.out' });
       }
     })();
+
+    // ── Orbital: ring stroke-draws, labels fade in around circle ──
+    (function initOrbital() {
+      const section = document.querySelector('.hp-orbital');
+      if (!section) return;
+
+      const ring   = section.querySelector('[data-orbital-ring]');
+      const labels = section.querySelectorAll('.hp-orbital__label');
+      const h2Pre  = section.querySelector('[data-orbital-h2-prefix]');
+      const h2Em   = section.querySelector('[data-orbital-h2-em]');
+
+      // Split the prefix text only; animate the <em> as a whole so its italic/colour treatment survives.
+      if (h2Pre) {
+        MPT.splitAndAnimate(h2Pre, { split: 'words', stagger: .05, duration: .5, from: { y: 16 }, start: 'top 85%' });
+      }
+      if (h2Em) {
+        if (MPT.isReducedMotion()) {
+          h2Em.style.opacity = 1;
+        } else {
+          gsap.from(h2Em, {
+            y: 16,
+            opacity: 0,
+            duration: .5,
+            ease: 'power3.out',
+            scrollTrigger: { trigger: section, start: 'top 85%', once: true },
+            delay: .35,
+          });
+        }
+      }
+
+      if (MPT.isReducedMotion()) {
+        if (ring) ring.setAttribute('stroke-dashoffset', '0');
+        labels.forEach(l => { l.style.opacity = 1; });
+        return;
+      }
+
+      const tl = gsap.timeline({ scrollTrigger: { trigger: section, start: 'top 70%', once: true } });
+      if (ring) tl.to(ring, { strokeDashoffset: 0, duration: .9, ease: 'power2.out' });
+      labels.forEach((l, i) => {
+        tl.to(l, { opacity: 1, x: 0, y: 0, duration: .4, ease: 'power2.out' }, `>${i === 0 ? '-0.5' : '-0.25'}`);
+      });
+    })();
   });
 })();

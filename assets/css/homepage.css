@@ -156,3 +156,31 @@ body.hp { background: var(--mpt-off); color: var(--mpt-ink); }
   .hp-hero__search-cell { border: none; padding: 10px; border-bottom: 1px solid rgba(37,37,37,.1); flex-basis: 100%; }
   .hp-hero__search-go { width: 100%; margin-top: 8px; padding: 14px; }
 }
+
+/* ============================================================
+   §03 ORBITAL SPLIT
+   ============================================================ */
+.hp-orbital { background: var(--mpt-off); padding: 120px 0; }
+.hp-orbital__inner { max-width: var(--container-max); margin: 0 auto; padding: 0 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+.hp-orbital__copy { max-width: 520px; }
+.hp-orbital__h2 { font-family: var(--font-sans); font-weight: 900; font-size: clamp(28px, 3vw, 40px); line-height: 1.15; letter-spacing: -.02em; margin: 18px 0 26px; }
+.hp-orbital__h2 em { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: var(--mpt-orange); }
+.hp-orbital__links { display: flex; gap: 22px; flex-wrap: wrap; }
+.hp-link { font-weight: 800; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; color: var(--mpt-ink); border-bottom: 1.5px solid var(--mpt-orange); padding-bottom: 4px; transition: color .15s; }
+.hp-link:hover { color: var(--mpt-orange); }
+
+.hp-orbital__visual { position: relative; aspect-ratio: 1.1/1; border-radius: var(--r-lg); overflow: hidden; }
+.hp-orbital__visual img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(.88) contrast(1.05) saturate(1.05); }
+.hp-orbital__ring { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+.hp-orbital__labels { position: absolute; inset: 0; pointer-events: none; }
+.hp-orbital__label { position: absolute; font-size: 11px; font-weight: 800; letter-spacing: .3em; text-transform: uppercase; color: #fff; white-space: nowrap; opacity: 0; transform: translate(0, 6px); }
+.hp-orbital__label--n { top: 10%; left: 50%; transform: translateX(-50%) translateY(6px); }
+.hp-orbital__label--e { right: 4%; top: 50%; transform: translateY(-50%) translateX(6px); }
+.hp-orbital__label--s { bottom: 10%; left: 50%; transform: translateX(-50%) translateY(-6px); }
+.hp-orbital__label--w { left: 4%; top: 50%; transform: translateY(-50%) translateX(-6px); }
+
+@media (max-width: 900px) {
+  .hp-orbital__inner { grid-template-columns: 1fr; gap: 40px; }
+  .hp-orbital__visual { aspect-ratio: 4/3; }
+  .hp-orbital__label { font-size: 10px; letter-spacing: .2em; }
+}
