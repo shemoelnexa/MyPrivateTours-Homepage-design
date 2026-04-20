@@ -4,11 +4,14 @@ Warm editorial homepage redesign (2026-04-21) — single direction, 13 sections,
 
 ## Local preview
 
-From the homepage directory:
+The homepage links into the sibling wireframe project at `../my private tours/` (paris.html, about.html, b2b.html, blog.html, contact.html, etc.). Serve from the **parent folder** that contains both projects so those links resolve:
 
+    cd "D:/Code Files"
     python -m http.server 8080
 
-Then open http://localhost:8080/
+Then open http://localhost:8080/my%20private%20tours%20homepage/ in your browser.
+
+If you serve from the homepage directory alone (`python -m http.server 8080` inside `my private tours homepage/`), the homepage itself renders but mega-menu deep links to `../my private tours/*.html` will 404.
 
 ## Sections
 
@@ -37,6 +40,17 @@ Then open http://localhost:8080/
 - WhatsApp widget `wa.me/` href is a placeholder — set real number during port.
 - See `docs/superpowers/specs/2026-04-21-homepage-redesign-design.md` for the design spec.
 - See `docs/superpowers/plans/2026-04-21-homepage-redesign-plan.md` for the implementation plan.
+
+## Deliberate deviations from the spec
+
+For speed and dev-team handoff simplicity, these spec items were intentionally deferred to the WordPress port:
+
+- **Fonts via Google Fonts `@import`** (in `assets/css/base.css`) rather than self-hosted WOFF2. Self-hosting + `<link rel="preload">` for Nunito 900/500 and EB Garamond 400-italic is a dev-team task during port; needed to hit the spec §12 LCP budget.
+- **No Tailwind CDN** — all styles live in `homepage.css`. Spec §5 mentioned Tailwind as a utility layer; the implementation didn't need it and the page is lighter without.
+- **Raw `<img>` tags with Unsplash CDN URLs** instead of `<picture>` elements with AVIF/WebP/JPEG fallbacks at multiple widths. Dev team self-hosts + adds `<picture>` during port; see `assets/images/sources.md` for photographer credits.
+- **Search pill submit is a no-op** — wire to Bokun (or equivalent) during port.
+- **Newsletter form submit is a no-op** — Mailchimp markup hooks (`honeypot`, `audience_id`) are present; wire up endpoint during port.
+- **WhatsApp widget href is `https://wa.me/` (no number)** — set during port.
 
 ## Reference
 

@@ -274,13 +274,13 @@
       const cities = await res.json();
 
       tabsEl.innerHTML = cities.map((c, i) =>
-        `<button type="button" class="hp-cities__tab ${i === 0 ? 'is-active' : ''}" role="tab" data-city-tab="${i}">${c.name} <span class="count">(${c.tourCount})</span></button>`
+        `<button type="button" class="hp-cities__tab ${i === 0 ? 'is-active' : ''}" role="tab" aria-selected="${i === 0 ? 'true' : 'false'}" aria-controls="hp-city-panel-${i}" data-city-tab="${i}">${c.name} <span class="count">(${c.tourCount})</span></button>`
       ).join('');
 
       track.innerHTML = cities.map((c, i) => {
         const chapter = String(i + 1).padStart(2, '0');
         return `
-          <article class="hp-city-card ${i === 0 ? 'is-active' : ''}" data-city-card="${i}" style="background-image:url('${c.image}')">
+          <article class="hp-city-card ${i === 0 ? 'is-active' : ''}" id="hp-city-panel-${i}" role="tabpanel" aria-hidden="${i === 0 ? 'false' : 'true'}" data-city-card="${i}" style="background-image:url('${c.image}')">
             <span class="hp-city-card__chip">Private tours</span>
             <div class="hp-city-card__caption">
               <div class="hp-city-card__chapter">No. ${chapter}</div>
@@ -295,8 +295,14 @@
 
       function setActive(i) {
         active = (i + cities.length) % cities.length;
-        track.querySelectorAll('.hp-city-card').forEach((c, idx) => c.classList.toggle('is-active', idx === active));
-        tabsEl.querySelectorAll('.hp-cities__tab').forEach((t, idx) => t.classList.toggle('is-active', idx === active));
+        track.querySelectorAll('.hp-city-card').forEach((c, idx) => {
+          c.classList.toggle('is-active', idx === active);
+          c.setAttribute('aria-hidden', idx === active ? 'false' : 'true');
+        });
+        tabsEl.querySelectorAll('.hp-cities__tab').forEach((t, idx) => {
+          t.classList.toggle('is-active', idx === active);
+          t.setAttribute('aria-selected', idx === active ? 'true' : 'false');
+        });
         const card = track.querySelector(`[data-city-card="${active}"]`);
         if (card) card.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
       }
@@ -320,6 +326,14 @@
           stopAuto(); startAuto();
         });
       });
+
+      const carousel = document.querySelector('[data-city-carousel]');
+      if (carousel) {
+        carousel.addEventListener('keydown', (e) => {
+          if (e.key === 'ArrowRight') { e.preventDefault(); setActive(active + 1); stopAuto(); startAuto(); }
+          if (e.key === 'ArrowLeft')  { e.preventDefault(); setActive(active - 1); stopAuto(); startAuto(); }
+        });
+      }
 
       track.addEventListener('mouseenter', stopAuto);
       track.addEventListener('mouseleave', startAuto);
