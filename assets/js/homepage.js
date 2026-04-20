@@ -97,14 +97,50 @@
       const nav = document.querySelector('[data-nav]');
       if (!nav) return;
 
+      // Sticky shadow
       const onScroll = () => nav.classList.toggle('is-stuck', window.scrollY > 40);
       onScroll();
       window.addEventListener('scroll', onScroll, { passive: true });
 
+      // Populate mega menu content
       populateAttractions();
       populateArticles();
       populatePartners();
 
+      // Mobile overlay refs (declared early so Escape handler can see closeMobile)
+      const hamburger = nav.querySelector('[data-hamburger]');
+      const overlay   = document.querySelector('[data-mobile-nav]');
+      const backdrop  = document.querySelector('[data-mobile-backdrop]');
+      const closeBtn  = document.querySelector('[data-mobile-close]');
+      const list      = document.querySelector('[data-mobile-list]');
+
+      if (!hamburger || !overlay || !backdrop || !closeBtn || !list) {
+        console.warn('homepage.js: nav elements missing');
+        return;
+      }
+
+      buildMobileList(list);
+
+      function openMobile() {
+        nav.classList.add('is-open');
+        overlay.classList.add('is-open');
+        backdrop.classList.add('is-open');
+        overlay.setAttribute('aria-hidden', 'false');
+        overlay.removeAttribute('inert');
+        hamburger.setAttribute('aria-expanded', 'true');
+        document.body.style.overflow = 'hidden';
+      }
+      function closeMobile() {
+        nav.classList.remove('is-open');
+        overlay.classList.remove('is-open');
+        backdrop.classList.remove('is-open');
+        overlay.setAttribute('aria-hidden', 'true');
+        overlay.setAttribute('inert', '');
+        hamburger.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+      }
+
+      // Mega menu hover + focus + click
       nav.querySelectorAll('.hp-nav__has-mega').forEach(item => {
         const btn = item.querySelector('button');
         let closeTimer;
@@ -113,9 +149,15 @@
         item.addEventListener('mouseenter', open);
         item.addEventListener('mouseleave', close);
         btn.addEventListener('focus', open);
-        btn.addEventListener('click', e => { e.preventDefault(); item.classList.toggle('is-open'); btn.setAttribute('aria-expanded', item.classList.contains('is-open')); });
-        document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+        btn.addEventListener('click', e => {
+          e.preventDefault();
+          const nowOpen = !item.classList.contains('is-open');
+          item.classList.toggle('is-open');
+          btn.setAttribute('aria-expanded', String(nowOpen));
+        });
       });
+
+      // Click outside closes any open mega
       document.addEventListener('click', e => {
         if (!e.target.closest('.hp-nav__has-mega')) {
           nav.querySelectorAll('.hp-nav__has-mega.is-open').forEach(i => {
@@ -125,16 +167,21 @@
         }
       });
 
-      const hamburger = nav.querySelector('[data-hamburger]');
-      const overlay   = document.querySelector('[data-mobile-nav]');
-      const backdrop  = document.querySelector('[data-mobile-backdrop]');
-      const closeBtn  = document.querySelector('[data-mobile-close]');
-      const list      = document.querySelector('[data-mobile-list]');
-      buildMobileList(list);
+      // Unified Escape: close mega menus and mobile overlay
+      document.addEventListener('keydown', e => {
+        if (e.key !== 'Escape') return;
+        nav.querySelectorAll('.hp-nav__has-mega.is-open').forEach(i => {
+          i.classList.remove('is-open');
+          i.querySelector('button')?.setAttribute('aria-expanded', 'false');
+        });
+        if (overlay.classList.contains('is-open')) {
+          closeMobile();
+          hamburger.focus();
+        }
+      });
 
-      const openMobile = () => { nav.classList.add('is-open'); overlay.classList.add('is-open'); backdrop.classList.add('is-open'); overlay.setAttribute('aria-hidden', 'false'); hamburger.setAttribute('aria-expanded', 'true'); document.body.style.overflow = 'hidden'; };
-      const closeMobile = () => { nav.classList.remove('is-open'); overlay.classList.remove('is-open'); backdrop.classList.remove('is-open'); overlay.setAttribute('aria-hidden', 'true'); hamburger.setAttribute('aria-expanded', 'false'); document.body.style.overflow = ''; };
-      hamburger.addEventListener('click', () => nav.classList.contains('is-open') ? closeMobile() : openMobile());
+      // Hamburger + overlay wiring
+      hamburger.addEventListener('click', () => overlay.classList.contains('is-open') ? closeMobile() : openMobile());
       closeBtn.addEventListener('click', closeMobile);
       backdrop.addEventListener('click', closeMobile);
     })();

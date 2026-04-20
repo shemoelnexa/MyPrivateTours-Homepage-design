@@ -52,7 +52,7 @@ body.hp { background: var(--mpt-off); color: var(--mpt-ink); }
 .hp-mega__main { min-width: 0; }
 .hp-mega__heading { font-size: 11px; font-weight: 800; letter-spacing: .3em; text-transform: uppercase; color: var(--mpt-ink); opacity: .7; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 16px; }
 .hp-mega__dot { width: 6px; height: 6px; background: var(--mpt-orange); border-radius: 50%; }
-.hp-mega__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.hp-mega__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
 .hp-mega__tile { display: flex; gap: 10px; padding: 10px; border-radius: var(--r-md); transition: background .15s; }
 .hp-mega__tile:hover { background: var(--mpt-orange-soft); }
 .hp-mega__tile-img { width: 48px; height: 48px; border-radius: var(--r-sm); background: var(--mpt-beige) center/cover; flex-shrink: 0; }
