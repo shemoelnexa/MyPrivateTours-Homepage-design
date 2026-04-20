@@ -196,7 +196,8 @@
 
       const rings = document.querySelectorAll('.hp-hero__ring');
       const mags  = document.querySelectorAll('.hp-hero__mag');
-      const title = document.querySelector('[data-split-words]');
+      const line1 = document.querySelector('[data-hero-split]');
+      const line2 = document.querySelector('[data-hero-em]');
 
       gsap.set(rings, { scale: .85, opacity: 0 });
       gsap.to(rings, { scale: 1, opacity: .12, duration: .9, ease: 'power3.out', stagger: .12, delay: .1 });
@@ -213,8 +214,11 @@
         });
       });
 
-      if (title) {
-        MPT.splitAndAnimate(title, { split: 'words', stagger: .08, duration: .5, ease: 'power3.out', from: { y: 20 }, start: 'top 90%' });
+      if (line1) {
+        MPT.splitAndAnimate(line1, { split: 'words', stagger: .08, duration: .5, ease: 'power3.out', from: { y: 20 }, start: 'top 90%' });
+      }
+      if (line2) {
+        gsap.from(line2, { y: 20, opacity: 0, duration: .6, delay: .55, ease: 'power3.out' });
       }
     })();
   });

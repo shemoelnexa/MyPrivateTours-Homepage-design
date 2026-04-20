@@ -140,6 +140,13 @@ body.hp { background: var(--mpt-off); color: var(--mpt-ink); }
 .hp-hero__search-go { background: var(--mpt-orange); color: #fff; border-radius: var(--r-pill); padding: 12px 22px; font-weight: 800; font-size: 12px; letter-spacing: .04em; text-transform: uppercase; cursor: pointer; }
 .hp-hero__search-go:hover { background: #CB5530; }
 
+.hp-hero__search-cell input:focus-visible,
+.hp-hero__search-cell select:focus-visible {
+  outline: 2px solid var(--mpt-orange);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
 @media (max-width: 900px) {
   .hp-hero__mag { display: none; }
   .hp-hero__ring--1 { width: 560px; height: 560px; }
