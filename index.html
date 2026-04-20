@@ -12,7 +12,14 @@
   <link rel="stylesheet" href="assets/css/base.css" />
   <link rel="stylesheet" href="assets/css/homepage.css" />
 </head>
-<body class="hp">
+<body class="hp is-loading">
+
+  <!-- PRELOADER -->
+  <div class="hp-preload" data-preload aria-hidden="true">
+    <div class="hp-preload__mark"></div>
+    <div class="hp-preload__wordmark">MyPrivate<em>Tours</em></div>
+    <div class="hp-preload__bar"><span></span></div>
+  </div>
 
   <!-- §01 GLOBAL NAV -->
   <header class="hp-nav" role="banner" data-nav>
@@ -421,11 +428,11 @@
     </svg>
   </a>
 
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/lenis@1.0.42/dist/lenis.min.js"></script>
+  <script src="assets/js/vendor/gsap.min.js"></script>
+  <script src="assets/js/vendor/ScrollTrigger.min.js"></script>
+  <script src="assets/js/vendor/split-type.min.js"></script>
+  <script src="assets/js/vendor/lenis.min.js"></script>
   <script src="assets/js/motion-core.js"></script>
-  <script src="assets/js/homepage.js" defer></script>
+  <script src="assets/js/homepage.js"></script>
 </body>
 </html>

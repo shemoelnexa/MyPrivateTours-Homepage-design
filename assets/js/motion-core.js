@@ -20,26 +20,37 @@ MPT.isReducedMotion = function () {
 
 MPT.initSmoothScroll = function (options = {}) {
   if (MPT.isReducedMotion()) return null;
-
-  const lenis = new Lenis({
-    duration: options.duration ?? 1.2,
-    easing: options.easing ?? ((t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))),
-    smoothWheel: true,
-    smoothTouch: false,
-  });
-
-  function raf(time) {
-    lenis.raf(time);
-    requestAnimationFrame(raf);
+  if (typeof Lenis === 'undefined') {
+    console.warn('motion-core: Lenis not loaded; native scrolling');
+    return null;
   }
-  requestAnimationFrame(raf);
 
-  // Sync Lenis with GSAP ScrollTrigger
-  lenis.on('scroll', ScrollTrigger.update);
-  gsap.ticker.add((time) => { lenis.raf(time * 1000); });
-  gsap.ticker.lagSmoothing(0);
+  try {
+    const lenis = new Lenis({
+      duration: options.duration ?? 1.2,
+      easing: options.easing ?? ((t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))),
+      smoothWheel: true,
+    });
 
-  return lenis;
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    if (typeof ScrollTrigger !== 'undefined') {
+      lenis.on('scroll', ScrollTrigger.update);
+    }
+    if (typeof gsap !== 'undefined' && gsap.ticker) {
+      gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+      gsap.ticker.lagSmoothing(0);
+    }
+
+    return lenis;
+  } catch (err) {
+    console.warn('motion-core: Lenis init failed, falling back to native scroll', err);
+    return null;
+  }
 };
 
 /**

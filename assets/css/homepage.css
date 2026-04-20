@@ -9,6 +9,64 @@
    §09 trust → §10 inspire → §11 journal → §12 dual → §13 footer  */
 
 /* ============================================================
+   PRELOADER
+   ============================================================ */
+body.hp.is-loading { overflow: hidden; }
+body.hp.is-loading main, body.hp.is-loading .hp-footer, body.hp.is-loading .hp-whatsapp { opacity: 0; }
+body.hp main, body.hp .hp-footer, body.hp .hp-whatsapp { transition: opacity .5s ease; }
+
+.hp-preload {
+  position: fixed; inset: 0; z-index: 9999;
+  background: var(--mpt-cream); color: var(--mpt-ink);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 22px;
+  transition: opacity .5s ease, visibility .5s;
+}
+body.hp:not(.is-loading) .hp-preload { opacity: 0; visibility: hidden; pointer-events: none; }
+
+.hp-preload__mark {
+  position: relative; width: 64px; height: 64px;
+  border: 1.5px solid var(--mpt-orange); border-radius: 50%;
+  animation: preloadPulse 1.6s ease-in-out infinite;
+}
+.hp-preload__mark::after {
+  content: ""; position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 18px; height: 18px; background: var(--mpt-orange); border-radius: 50%;
+}
+.hp-preload__mark::before {
+  content: ""; position: absolute; top: 50%; left: 50%;
+  width: 86px; height: 24px;
+  border: 1px solid rgba(224,101,60,.55); border-radius: 50%;
+  transform: translate(-50%, -50%) rotate(-18deg);
+  animation: preloadOrbit 4s linear infinite;
+}
+@keyframes preloadPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+@keyframes preloadOrbit {
+  from { transform: translate(-50%, -50%) rotate(-18deg); }
+  to   { transform: translate(-50%, -50%) rotate(342deg); }
+}
+
+.hp-preload__wordmark {
+  font-family: var(--font-sans); font-weight: 900; font-size: 22px; letter-spacing: -.02em;
+}
+.hp-preload__wordmark em {
+  font-family: var(--font-serif); font-style: italic; font-weight: 400; color: var(--mpt-orange);
+}
+
+.hp-preload__bar {
+  width: 180px; height: 2px; background: rgba(37,37,37,.1); border-radius: 2px; overflow: hidden;
+}
+.hp-preload__bar span {
+  display: block; height: 100%; width: 40%; background: var(--mpt-orange);
+  animation: preloadSlide 1.2s ease-in-out infinite;
+}
+@keyframes preloadSlide {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(350%); }
+}
+
+/* ============================================================
    §01 NAV + MOBILE NAV
    ============================================================ */
 

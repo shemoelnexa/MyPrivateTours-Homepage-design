@@ -96,9 +96,25 @@
     });
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
+  // Resilient runner: each init block runs in isolation; one failure doesn't
+  // cascade and kill the rest.
+  function run(name, fn) {
+    try { fn(); } catch (err) { console.error('[' + name + '] failed:', err); }
+  }
+
+  // Preloader: hide once fonts + images + async fetches are all done, with a
+  // hard 4s fallback so the page never stays stuck behind the splash.
+  function hidePreloader() {
+    if (document.body && document.body.classList.contains('is-loading')) {
+      document.body.classList.remove('is-loading');
+    }
+  }
+  window.addEventListener('load', () => setTimeout(hidePreloader, 200));
+  setTimeout(hidePreloader, 4000);
+
+  function boot() {
     // Nav: sticky shadow, mega menus, mobile overlay
-    (function initNav() {
+    run('initNav', function initNav() {
       const nav = document.querySelector('[data-nav]');
       if (!nav) return;
 
@@ -189,10 +205,10 @@
       hamburger.addEventListener('click', () => overlay.classList.contains('is-open') ? closeMobile() : openMobile());
       closeBtn.addEventListener('click', closeMobile);
       backdrop.addEventListener('click', closeMobile);
-    })();
+    });
 
     // ── Hero: rings fade, magazines fly in, headline split, parallax ──
-    (function initHero() {
+    run('initHero', function initHero() {
       if (MPT.isReducedMotion()) {
         document.querySelectorAll('.hp-hero__ring').forEach(r => r.style.opacity = .12);
         document.querySelectorAll('.hp-hero__mag').forEach(m => m.style.opacity = 1);
@@ -225,10 +241,10 @@
       if (line2) {
         gsap.from(line2, { y: 20, opacity: 0, duration: .6, delay: .55, ease: 'power3.out' });
       }
-    })();
+    });
 
     // ── Orbital: ring stroke-draws, labels fade in around circle ──
-    (function initOrbital() {
+    run('initOrbital', function initOrbital() {
       const section = document.querySelector('.hp-orbital');
       if (!section) return;
 
@@ -267,10 +283,10 @@
       labels.forEach((l, i) => {
         tl.to(l, { opacity: 1, x: 0, y: 0, duration: .4, ease: 'power2.out' }, `>${i === 0 ? '-0.5' : '-0.25'}`);
       });
-    })();
+    });
 
     // ── Cities: tabs + peek carousel, auto-advance, arrows, sync ──
-    (async function initCities() {
+    run('initCities', async function initCities() {
       const track   = document.querySelector('[data-city-track]');
       const tabsEl  = document.querySelector('[data-city-tabs]');
       if (!track || !tabsEl) return;
@@ -344,10 +360,10 @@
       track.addEventListener('mouseleave', startAuto);
 
       startAuto();
-    })();
+    });
 
     // ── Tours: render from tours.json (first 6) ──
-    (async function initTours() {
+    run('initTours', async function initTours() {
       const grid = document.querySelector('[data-tours-grid]');
       if (!grid) return;
 
@@ -374,10 +390,10 @@
           </div>
         </a>
       `).join('');
-    })();
+    });
 
     // ── Testimonials: render from testimonials.json, auto-advance 8s ──
-    (async function initTestimonials() {
+    run('initTestimonials', async function initTestimonials() {
       const track = document.querySelector('[data-reviews-track]');
       const dotsEl = document.querySelector('[data-reviews-dots]');
       if (!track) return;
@@ -419,10 +435,10 @@
       track.addEventListener('mouseenter', stopAuto);
       track.addEventListener('mouseleave', startAuto);
       startAuto();
-    })();
+    });
 
     // ── Trust: animate counters on scroll-in ──
-    (function initTrust() {
+    run('initTrust', function initTrust() {
       document.querySelectorAll('[data-counter]').forEach(el => {
         const target = parseInt(el.dataset.counter, 10);
         const suffix = target === 500000 ? '+' : '';
@@ -439,10 +455,10 @@
           onUpdate: () => { el.textContent = Math.round(obj.n).toLocaleString() + suffix; },
         });
       });
-    })();
+    });
 
     // ── Journal: render from blog-posts.json ──
-    (async function initJournal() {
+    run('initJournal', async function initJournal() {
       const grid = document.querySelector('[data-journal-grid]');
       if (!grid) return;
 
@@ -464,6 +480,12 @@
           <div class="hp-journal-card__meta">${p.readTime} read · ${fmt(p.date)}</div>
         </a>
       `).join('');
-    })();
-  });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
 })();
