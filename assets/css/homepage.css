@@ -408,3 +408,15 @@ body.hp { background: var(--mpt-off); color: var(--mpt-ink); }
 
 @media (max-width: 900px) { .hp-footer__grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 560px) { .hp-footer__grid { grid-template-columns: 1fr; } .hp-footer__bottom { flex-direction: column; text-align: center; } }
+
+/* ============================================================
+   REDUCED MOTION OVERRIDES
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .hp-hero__ring, .hp-hero__mag { opacity: 1 !important; transform: none !important; }
+  .hp-inspire__bg img { animation: none !important; transform: none !important; }
+  .hp-btn--glow { animation: none !important; }
+  .hp-city-card { transition: none !important; }
+  .hp-orbital__ring circle { stroke-dashoffset: 0 !important; }
+  .hp-orbital__label { opacity: 1 !important; transform: translate(0, 0) !important; }
+}
