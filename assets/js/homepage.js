@@ -6,6 +6,11 @@
   'use strict';
   if (!window.MPT) { console.error('homepage.js: MPT missing'); return; }
 
+  // Force animations on regardless of OS prefers-reduced-motion — this is a
+  // demo build. Restore MPT.isReducedMotion to its original definition during
+  // the WordPress port if accessibility handling needs to be re-enabled.
+  MPT.isReducedMotion = function () { return false; };
+
   MPT.initSmoothScroll({ duration: 1.2 });
 
   // Mega menu content (attractions, articles, partners)
