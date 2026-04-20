@@ -198,7 +198,20 @@
     </section>
 
     <!-- §04 + §05 CITIES -->
-    <section class="hp-cities" data-section="cities"></section>
+    <section class="hp-cities" data-section="cities" aria-labelledby="hp-cities-h2">
+      <div class="hp-cities__intro">
+        <p class="hp-eyebrow hp-eyebrow--centered">Our destinations</p>
+        <h2 id="hp-cities-h2" class="hp-cities__h2">OUR CITIES</h2>
+        <p class="hp-cities__sub">Eight iconic destinations, each led by local experts.</p>
+        <div class="hp-cities__tabs" role="tablist" data-city-tabs></div>
+      </div>
+
+      <div class="hp-cities__carousel" data-city-carousel>
+        <button class="hp-cities__arrow hp-cities__arrow--prev" data-city-nav="-1" aria-label="Previous city">←</button>
+        <div class="hp-cities__track" data-city-track></div>
+        <button class="hp-cities__arrow hp-cities__arrow--next" data-city-nav="1" aria-label="Next city">→</button>
+      </div>
+    </section>
 
     <!-- §06 WHY -->
     <section class="hp-why" data-section="why"></section>

@@ -263,5 +263,68 @@
         tl.to(l, { opacity: 1, x: 0, y: 0, duration: .4, ease: 'power2.out' }, `>${i === 0 ? '-0.5' : '-0.25'}`);
       });
     })();
+
+    // ── Cities: tabs + peek carousel, auto-advance, arrows, sync ──
+    (async function initCities() {
+      const track   = document.querySelector('[data-city-track]');
+      const tabsEl  = document.querySelector('[data-city-tabs]');
+      if (!track || !tabsEl) return;
+
+      const res = await fetch('assets/data/cities.json');
+      const cities = await res.json();
+
+      tabsEl.innerHTML = cities.map((c, i) =>
+        `<button type="button" class="hp-cities__tab ${i === 0 ? 'is-active' : ''}" role="tab" data-city-tab="${i}">${c.name} <span class="count">(${c.tourCount})</span></button>`
+      ).join('');
+
+      track.innerHTML = cities.map((c, i) => {
+        const chapter = String(i + 1).padStart(2, '0');
+        return `
+          <article class="hp-city-card ${i === 0 ? 'is-active' : ''}" data-city-card="${i}" style="background-image:url('${c.image}')">
+            <span class="hp-city-card__chip">Private tours</span>
+            <div class="hp-city-card__caption">
+              <div class="hp-city-card__chapter">No. ${chapter}</div>
+              <div class="hp-city-card__title">${c.name.toUpperCase()} — ${c.country.toUpperCase()}</div>
+              <div class="hp-city-card__tagline">${c.tagline}</div>
+            </div>
+          </article>`;
+      }).join('');
+
+      let active = 0;
+      let autoTimer = null;
+
+      function setActive(i) {
+        active = (i + cities.length) % cities.length;
+        track.querySelectorAll('.hp-city-card').forEach((c, idx) => c.classList.toggle('is-active', idx === active));
+        tabsEl.querySelectorAll('.hp-cities__tab').forEach((t, idx) => t.classList.toggle('is-active', idx === active));
+        const card = track.querySelector(`[data-city-card="${active}"]`);
+        if (card) card.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
+
+      function startAuto() {
+        stopAuto();
+        autoTimer = setInterval(() => setActive(active + 1), 7000);
+      }
+      function stopAuto() { if (autoTimer) { clearInterval(autoTimer); autoTimer = null; } }
+
+      tabsEl.addEventListener('click', e => {
+        const t = e.target.closest('[data-city-tab]');
+        if (!t) return;
+        setActive(parseInt(t.dataset.cityTab, 10));
+        stopAuto(); startAuto();
+      });
+
+      document.querySelectorAll('[data-city-nav]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          setActive(active + parseInt(btn.dataset.cityNav, 10));
+          stopAuto(); startAuto();
+        });
+      });
+
+      track.addEventListener('mouseenter', stopAuto);
+      track.addEventListener('mouseleave', startAuto);
+
+      startAuto();
+    })();
   });
 })();
