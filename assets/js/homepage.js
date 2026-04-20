@@ -326,5 +326,35 @@
 
       startAuto();
     })();
+
+    // ── Tours: render from tours.json (first 6) ──
+    (async function initTours() {
+      const grid = document.querySelector('[data-tours-grid]');
+      if (!grid) return;
+
+      const res = await fetch('assets/data/tours.json');
+      const tours = await res.json();
+      const six = tours.slice(0, 6);
+
+      const cur = (code) => ({ EUR: '€', GBP: '£', USD: '$' }[code] ?? code);
+
+      grid.innerHTML = six.map(t => `
+        <a href="#" class="hp-tour-card">
+          <div class="hp-tour-card__img">
+            <span class="hp-tour-card__chip">${t.city}</span>
+            <img src="${t.image}" alt="${t.name} — ${t.city}" loading="lazy" />
+          </div>
+          <div class="hp-tour-card__body">
+            <h3>${t.name}</h3>
+            <div class="hp-tour-card__meta">
+              <span>${t.duration}</span>
+              <span><span class="star">★</span> ${t.rating} (${t.reviews})</span>
+            </div>
+            <div class="hp-tour-card__price">from ${cur(t.currency)}${t.priceFrom}<small>per private group, up to 8</small></div>
+            <span class="hp-tour-card__link">View tour →</span>
+          </div>
+        </a>
+      `).join('');
+    })();
   });
 })();
