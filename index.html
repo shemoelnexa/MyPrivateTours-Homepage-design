@@ -3,206 +3,166 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MyPrivateTours — The world, on private terms</title>
-  <meta name="description" content="Expert local guides. Zero strangers. Eight cities, crafted into private chapters." />
+  <title>MyPrivateTours — Your trusted Private Tour Designer</title>
+  <meta name="description" content="Expert local guides across eight iconic cities. 100% private groups. Flexible booking. Private tours designed around your pace." />
 
-  <link rel="preload" as="image" href="https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?w=1920&fm=webp&q=85" />
+  <link rel="preload" as="image" href="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1600&fm=webp&q=85" />
+
   <link rel="stylesheet" href="assets/css/tokens.css" />
   <link rel="stylesheet" href="assets/css/base.css" />
-  <link rel="stylesheet" href="assets/css/concept-c.css" />
+  <link rel="stylesheet" href="assets/css/homepage.css" />
 </head>
-<body class="cc">
+<body class="hp">
 
-  <header class="cc-nav" role="banner" data-cc-nav>
-    <div class="cc-nav__inner">
-      <a href="index.html" class="cc-nav__logo">MyPrivate<em>Tours</em></a>
-      <nav class="cc-nav__primary" aria-label="Primary">
-        <ul>
-          <li><a href="#cities">Cities</a></li>
-          <li><a href="#tours">Tours</a></li>
-          <li><a href="#journal">Journal</a></li>
-          <li><a href="#about">About</a></li>
-        </ul>
-      </nav>
-      <div class="cc-nav__right">
-        <span class="cc-nav__lang">EN · €</span>
-        <a href="#tours" class="cc-btn cc-btn--glow">Book Now</a>
+  <!-- §01 GLOBAL NAV -->
+  <header class="hp-nav" role="banner" data-nav>
+    <div class="hp-nav__top">
+      <div class="hp-nav__top-inner">
+        <a href="#" class="hp-util"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> Wishlist</a>
+        <a href="#" class="hp-util"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> EN / USD</a>
+        <a href="#" class="hp-util hp-util--pill">Sign in</a>
+      </div>
+    </div>
+
+    <div class="hp-nav__primary">
+      <div class="hp-nav__primary-inner">
+        <a href="index.html" class="hp-logo" aria-label="MyPrivateTours — home">
+          <span class="hp-logo__mark" aria-hidden="true"></span>
+          <span class="hp-logo__wordmark">MyPrivate<em>Tours</em></span>
+        </a>
+
+        <nav class="hp-nav__items" aria-label="Primary">
+          <ul>
+            <li><a href="index.html">Home</a></li>
+
+            <li class="hp-nav__has-mega" data-mega="cities">
+              <button type="button" aria-expanded="false" aria-haspopup="true">City Tours <span aria-hidden="true">▾</span></button>
+              <div class="hp-mega" role="region" aria-label="City Tours">
+                <div class="hp-mega__layout">
+                  <aside class="hp-mega__sidebar">
+                    <ul>
+                      <li><a href="../my private tours/paris.html" class="is-active">Paris</a></li>
+                      <li><a href="#">Rome</a></li>
+                      <li><a href="#">London</a></li>
+                      <li><a href="#">Barcelona</a></li>
+                      <li><a href="#">Florence</a></li>
+                      <li><a href="#">Prague</a></li>
+                      <li><a href="#">Venice</a></li>
+                      <li><a href="#">New York</a></li>
+                    </ul>
+                  </aside>
+                  <div class="hp-mega__main">
+                    <h4 class="hp-mega__heading"><span class="hp-mega__dot"></span> Top attractions</h4>
+                    <div class="hp-mega__grid" data-mega-attractions></div>
+                  </div>
+                </div>
+              </div>
+            </li>
+
+            <li class="hp-nav__has-mega" data-mega="blog">
+              <button type="button" aria-expanded="false" aria-haspopup="true">Blog <span aria-hidden="true">▾</span></button>
+              <div class="hp-mega" role="region" aria-label="Blog">
+                <div class="hp-mega__layout">
+                  <aside class="hp-mega__sidebar">
+                    <ul>
+                      <li><a href="../my private tours/blog.html" class="is-active">All Articles</a></li>
+                      <li><a href="#">Travel Tips</a></li>
+                      <li><a href="#">Destination Guides</a></li>
+                      <li><a href="#">Food &amp; Culture</a></li>
+                      <li><a href="#">Family Travel</a></li>
+                      <li><a href="#">Hidden Gems</a></li>
+                    </ul>
+                  </aside>
+                  <div class="hp-mega__main">
+                    <h4 class="hp-mega__heading"><span class="hp-mega__dot"></span> Latest articles</h4>
+                    <div class="hp-mega__grid" data-mega-articles></div>
+                  </div>
+                </div>
+              </div>
+            </li>
+
+            <li><a href="../my private tours/about.html">About</a></li>
+
+            <li class="hp-nav__has-mega" data-mega="b2b">
+              <button type="button" aria-expanded="false" aria-haspopup="true">B2B <span aria-hidden="true">▾</span></button>
+              <div class="hp-mega" role="region" aria-label="B2B">
+                <div class="hp-mega__layout">
+                  <aside class="hp-mega__sidebar">
+                    <ul>
+                      <li><a href="../my private tours/b2b.html" class="is-active">Overview</a></li>
+                      <li><a href="#">Travel Agencies</a></li>
+                      <li><a href="#">Hotels &amp; Concierge</a></li>
+                      <li><a href="#">Corporate Groups</a></li>
+                      <li><a href="#">DMCs &amp; Operators</a></li>
+                      <li><a href="#">Affiliate Program</a></li>
+                    </ul>
+                  </aside>
+                  <div class="hp-mega__main">
+                    <h4 class="hp-mega__heading"><span class="hp-mega__dot"></span> Partner solutions</h4>
+                    <div class="hp-mega__grid" data-mega-partners></div>
+                  </div>
+                </div>
+              </div>
+            </li>
+
+            <li><a href="../my private tours/contact.html">Contact</a></li>
+          </ul>
+        </nav>
+
+        <button class="hp-hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="hp-mobile-nav" data-hamburger>
+          <span></span><span></span><span></span>
+        </button>
       </div>
     </div>
   </header>
 
+  <!-- MOBILE NAV -->
+  <div class="hp-mobile-nav" id="hp-mobile-nav" aria-hidden="true" data-mobile-nav>
+    <div class="hp-mobile-nav__header">
+      <span class="hp-logo__wordmark">MyPrivate<em>Tours</em></span>
+      <button class="hp-mobile-nav__close" aria-label="Close menu" data-mobile-close>&times;</button>
+    </div>
+    <ul class="hp-mobile-nav__list" data-mobile-list></ul>
+  </div>
+  <div class="hp-mobile-nav__backdrop" data-mobile-backdrop></div>
+
   <main>
-    <section class="cc-hero" aria-labelledby="cc-hero-h1">
-  <div class="cc-hero__bg">
-    <img src="https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?w=1920&fm=webp&q=85" alt="Paris — Eiffel Tower at sunset" class="cc-hero__img" />
-    <div class="cc-hero__overlay"></div>
-  </div>
-  <div class="cc-hero__content">
-    <div class="cc-hero__top">
-      <span class="cc-live"><span class="dot"></span> Now in Paris · 18:42</span>
-      <span class="cc-frame">01 / 08 — PARIS</span>
-    </div>
-    <div class="cc-hero__center">
-      <p class="label">Chapter one — The curated city</p>
-      <h1 id="cc-hero-h1" class="cc-hero__h1" data-split-lines>
-        The world,<br /><em>on private terms.</em>
-      </h1>
-      <p class="cc-hero__sub">Expert local guides. Zero strangers. Eight cities, crafted into private chapters.</p>
-    </div>
-    <div class="cc-hero__bottom">
-      <form class="cc-hero__search" action="#" method="get">
-        <input type="search" placeholder="Where would you like to go?" aria-label="Destination" />
-        <button type="submit" class="cc-btn cc-btn--glow">Explore</button>
-      </form>
-      <span class="cc-scroll">Scroll ↓</span>
-    </div>
-  </div>
-</section>
+    <!-- §02 HERO -->
+    <section class="hp-hero" data-section="hero"></section>
 
-<section id="cities" class="cc-cities" aria-labelledby="cc-cities-h2">
-  <div class="container">
-    <header class="cc-cities__header">
-      <h2 id="cc-cities-h2" data-split-lines>Eight chapters,<br /><em>one passport.</em></h2>
-      <div class="cc-cities__nav">
-        <button class="cc-cities__arrow" data-scroll-cities="-1" aria-label="Previous">←</button>
-        <button class="cc-cities__arrow" data-scroll-cities="1" aria-label="Next">→</button>
-      </div>
-    </header>
-  </div>
-  <div class="cc-cities__track" data-cities-grid></div>
-  <div class="cc-marquee">
-    <div class="cc-marquee__track" data-marquee></div>
-  </div>
-</section>
+    <!-- §03 ORBITAL SPLIT -->
+    <section class="hp-orbital" data-section="orbital"></section>
 
-<section class="cc-why" aria-labelledby="cc-why-h2">
-  <div class="cc-why__pin" data-why-pin>
-    <div class="cc-why__left">
-      <p class="label">Why MyPrivateTours</p>
-      <h2 id="cc-why-h2" class="cc-why__title" data-why-title>
-        <span class="cc-why__slide is-active" data-i="0">Expert local guides.</span>
-        <span class="cc-why__slide" data-i="1">100% private groups.</span>
-        <span class="cc-why__slide" data-i="2">Flexible booking.</span>
-        <span class="cc-why__slide" data-i="3">Fully curated.</span>
-      </h2>
-      <div class="cc-why__body" data-why-body>
-        <p class="cc-why__copy is-active" data-i="0">City specialists, not tour reps. They live where they teach.</p>
-        <p class="cc-why__copy" data-i="1">No strangers. No pace compromise. Your tour is genuinely yours.</p>
-        <p class="cc-why__copy" data-i="2">Free cancellation up to 48 hours before. Reschedule at no cost.</p>
-        <p class="cc-why__copy" data-i="3">End-to-end design. Skip-the-line. After-hours access. No aggregators.</p>
-      </div>
-      <div class="cc-why__progress">
-        <span data-dot="0" class="is-active"></span>
-        <span data-dot="1"></span>
-        <span data-dot="2"></span>
-        <span data-dot="3"></span>
-      </div>
-    </div>
-    <div class="cc-why__right" data-why-images>
-      <img data-i="0" class="is-active" src="https://images.unsplash.com/photo-1515542483964-5e8c63d7d89b?w=1920&fm=webp&q=85" alt="Local guide leading a private tour" />
-      <img data-i="1" src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=1920&fm=webp&q=85" alt="Private walking tour through a city's heart" />
-      <img data-i="2" src="https://images.unsplash.com/photo-1578095172812-dcc191c5aed8?w=1920&fm=webp&q=85" alt="Traveller on a flexible tour itinerary" />
-      <img data-i="3" src="https://images.unsplash.com/photo-1748641172448-e33ba1d0390b?w=1920&fm=webp&q=85" alt="Private after-hours museum access" />
-    </div>
-  </div>
-</section>
+    <!-- §04 + §05 CITIES -->
+    <section class="hp-cities" data-section="cities"></section>
 
-<section id="tours" class="cc-tours" aria-labelledby="cc-tours-h2">
-  <div class="container">
-    <header class="cc-tours__header">
-      <p class="label">Featured tours</p>
-      <h2 id="cc-tours-h2" data-split-lines>Cinema-worthy<br /><em>afternoons.</em></h2>
-    </header>
-    <div class="cc-tours__grid" data-tours-grid></div>
-  </div>
-</section>
+    <!-- §06 WHY -->
+    <section class="hp-why" data-section="why"></section>
 
-<section class="cc-testimonials" aria-labelledby="cc-test-h2">
-  <h2 id="cc-test-h2" class="sr-only">Traveller reviews</h2>
-  <div class="cc-test__stage" data-testimonials></div>
-</section>
+    <!-- §07 TOURS -->
+    <section class="hp-tours" data-section="tours"></section>
 
-<section class="cc-trust" aria-label="Our numbers">
-  <div class="container">
-    <ul class="cc-trust__strip">
-      <li><strong data-count="500000">0</strong><span>Travellers guided</span></li>
-      <li><strong>4.9<em>★</em></strong><span>Average rating</span></li>
-      <li><strong data-count="8">0</strong><span>Cities</span></li>
-      <li><strong>24/7</strong><span>Concierge</span></li>
-      <li><strong>48h</strong><span>Free cancel</span></li>
-    </ul>
-  </div>
-</section>
+    <!-- §08 TESTIMONIALS -->
+    <section class="hp-testimonials" data-section="testimonials"></section>
 
-<section id="journal" class="cc-blog" aria-labelledby="cc-blog-h2">
-  <div class="container">
-    <header class="cc-blog__header">
-      <p class="label">The journal</p>
-      <h2 id="cc-blog-h2" data-split-lines>Stories<br /><em>before departure.</em></h2>
-    </header>
-    <div class="cc-blog__grid" data-blog-grid></div>
-  </div>
-</section>
+    <!-- §09 TRUST -->
+    <section class="hp-trust" data-section="trust"></section>
 
-<section class="cc-newsletter" aria-labelledby="cc-news-h2">
-  <div class="container">
-    <h2 id="cc-news-h2" data-split-lines><em>Join the journal.</em></h2>
-    <p>Quiet seasonal notes, unpublished city guides, and first access to new tours.</p>
-    <form class="cc-newsletter__form" action="#" method="post">
-      <label class="sr-only" for="cc-email">Email</label>
-      <input id="cc-email" type="email" placeholder="your@email.com" required />
-      <button type="submit" class="cc-btn cc-btn--glow">Subscribe</button>
-    </form>
-  </div>
-</section>
+    <!-- §10 INSPIRE -->
+    <section class="hp-inspire" data-section="inspire"></section>
+
+    <!-- §11 JOURNAL -->
+    <section class="hp-journal" data-section="journal"></section>
+
+    <!-- §12 DUAL -->
+    <section class="hp-dual" data-section="dual"></section>
   </main>
 
-  <footer class="cc-footer" role="contentinfo">
-    <div class="cc-footer__inner">
-      <div class="cc-footer__wordmark">
-        <span>MyPrivate</span><em>Tours.</em>
-      </div>
-      <div class="cc-footer__cols">
-        <div>
-          <h4>Cities</h4>
-          <ul>
-            <li><a href="#">Ch. 01 — Paris</a></li>
-            <li><a href="#">Ch. 02 — Rome</a></li>
-            <li><a href="#">Ch. 03 — London</a></li>
-            <li><a href="#">Ch. 04 — Barcelona</a></li>
-            <li><a href="#">Ch. 05 — Florence</a></li>
-            <li><a href="#">Ch. 06 — Prague</a></li>
-            <li><a href="#">Ch. 07 — Venice</a></li>
-            <li><a href="#">Ch. 08 — New York</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4>Company</h4>
-          <ul>
-            <li><a href="#about">About</a></li>
-            <li><a href="#b2b">B2B &amp; Travel Agents</a></li>
-            <li><a href="#journal">Journal</a></li>
-            <li><a href="#">Contact</a></li>
-            <li><a href="#">FAQ</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4>Legal</h4>
-          <ul>
-            <li><a href="#">Terms</a></li>
-            <li><a href="#">Privacy</a></li>
-            <li><a href="#">Cookies</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="cc-footer__bottom">
-        <span>© MyPrivateTours 2026 · All rights reserved</span>
-        <em>Made privately, with care.</em>
-      </div>
-    </div>
-  </footer>
+  <!-- §13 FOOTER -->
+  <footer class="hp-footer" role="contentinfo" data-section="footer"></footer>
 
-  <a href="https://wa.me/" class="cc-whatsapp" aria-label="Chat on WhatsApp">
+  <!-- WhatsApp float -->
+  <a href="https://wa.me/" class="hp-whatsapp" aria-label="Chat on WhatsApp">
     <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
       <path fill="currentColor" d="M17.5 14.4c-.3-.2-1.7-.8-2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.4.5-.6.2-.2.2-.3.3-.5.1-.2.1-.4 0-.5-.1-.2-.7-1.7-1-2.3-.3-.7-.6-.6-.7-.6h-.6c-.2 0-.5.1-.8.4-.3.3-1.1 1.1-1.1 2.6 0 1.6 1.1 3.1 1.2 3.3.2.2 2.2 3.4 5.4 4.7 3.2 1.2 3.2.8 3.8.8.6-.1 1.8-.7 2.1-1.5.3-.8.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4zM12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.6 1.4 5.1L2 22l4.9-1.4C8.4 21.5 10.2 22 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2z"/>
     </svg>
@@ -213,7 +173,6 @@
   <script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.0.42/dist/lenis.min.js"></script>
   <script src="assets/js/motion-core.js"></script>
-  <script src="assets/js/concept-c.js" defer></script>
-
+  <script src="assets/js/homepage.js" defer></script>
 </body>
 </html>
