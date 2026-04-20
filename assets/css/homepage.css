@@ -355,3 +355,26 @@ body.hp { background: var(--mpt-off); color: var(--mpt-ink); }
 .hp-journal__cta { text-align: center; margin-top: 44px; }
 
 @media (max-width: 900px) { .hp-journal__grid { grid-template-columns: 1fr; } }
+
+/* ============================================================
+   §12 DUAL ROW
+   ============================================================ */
+.hp-dual { background: var(--mpt-beige); padding: 80px 0; }
+.hp-dual__grid { max-width: var(--container-max); margin: 0 auto; padding: 0 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.hp-dual__card { position: relative; min-height: 420px; border-radius: var(--r-lg); overflow: hidden; background-size: cover; background-position: center; display: flex; align-items: flex-end; color: #fff; transition: transform .26s var(--ease-out); }
+.hp-dual__card:hover { transform: translateY(-4px); }
+.hp-dual__overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(15,9,7,.15) 0%, rgba(15,9,7,.75) 100%); }
+.hp-dual__body { position: relative; z-index: 2; padding: 36px; width: 100%; }
+.hp-dual__h3 { font-family: var(--font-sans); font-weight: 900; font-size: clamp(22px, 2.5vw, 30px); letter-spacing: -.02em; line-height: 1.15; margin: 12px 0 18px; color: #fff; }
+.hp-dual__lede { font-size: 14px; line-height: 1.55; opacity: .88; margin-bottom: 18px; max-width: 420px; }
+.hp-dual__form { display: flex; gap: 8px; background: rgba(255,255,255,.12); backdrop-filter: blur(10px); border-radius: var(--r-pill); padding: 6px 6px 6px 20px; max-width: 420px; border: 1px solid rgba(255,255,255,.22); }
+.hp-dual__form input[type=email] { flex: 1; background: transparent; border: 0; color: #fff; font-size: 14px; font-family: inherit; outline: 0; }
+.hp-dual__form input[type=email]:focus-visible { outline: 2px solid var(--mpt-sand); outline-offset: 2px; border-radius: 4px; }
+.hp-dual__form input[type=email]::placeholder { color: rgba(255,255,255,.7); }
+.hp-dual__form button { background: var(--mpt-orange); color: #fff; border-radius: var(--r-pill); padding: 10px 20px; font-weight: 800; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; cursor: pointer; border: 0; }
+.hp-dual__form button:hover { background: #CB5530; }
+.hp-dual__fineprint { font-size: 11px; opacity: .6; margin-top: 10px; }
+.hp-btn--ghost-light { border: 1.5px solid #fff; color: #fff; background: transparent; }
+.hp-btn--ghost-light:hover { background: #fff; color: var(--mpt-ink); }
+
+@media (max-width: 900px) { .hp-dual__grid { grid-template-columns: 1fr; } }
