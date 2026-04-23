@@ -242,9 +242,7 @@ body.hp { background: var(--mpt-off); color: var(--mpt-ink); }
 @media (max-width: 900px) {
   .hp-hero { min-height: 90vh; }
   .hp-hero__content { padding: 100px 24px 180px; }
-  .hp-hero__search { flex-wrap: wrap; border-radius: var(--r-lg); padding: 10px; }
-  .hp-hero__search-cell { border: none; padding: 10px; border-bottom: 1px solid rgba(37,37,37,.12); flex-basis: 100%; }
-  .hp-hero__search-go { width: 100%; margin-top: 8px; padding: 14px; }
+  .hp-hero__search { display: none; }
   .hp-hero__arrow { display: none; }
   .hp-hero__caption { left: 20px; bottom: 90px; max-width: calc(100% - 40px); }
   .hp-hero__indicators { bottom: 40px; }
